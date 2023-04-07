@@ -15,7 +15,6 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 
 	@Override
 	public Collection<Compte> getAllComptes() {
-		// TODO Auto-generated method stub
 		TypedQuery<Compte> req = em.createQuery("select c from Compte c",
 				Compte.class);
 		return req.getResultList();
@@ -23,7 +22,6 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 
 	@Override
 	public void addCompte(Compte c) {
-		// TODO Auto-generated method stub
 		em.persist(c);
 	}
 
