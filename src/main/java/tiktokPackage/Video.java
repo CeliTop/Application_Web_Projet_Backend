@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class Video  implements Serializable{
 	private String filePath;
 	
 	@Column(nullable = false)
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	Compte compteUploader;
 
 	public Video() {}

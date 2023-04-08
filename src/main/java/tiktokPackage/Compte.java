@@ -3,7 +3,9 @@ package tiktokPackage;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,7 @@ public class Compte implements Serializable{
 
 	private String nom;
 	
-	@OneToMany(mappedBy="compteUploader")
+	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.EAGER)
 	Collection<Video> videos;
 	
 	public Compte() {
