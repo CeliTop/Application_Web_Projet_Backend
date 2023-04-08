@@ -26,8 +26,7 @@ public class Video  implements Serializable{
 	@Column(nullable = false)
 	private String filePath;
 	
-	@Column(nullable = false)
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	Compte compteUploader;
 
 	public Video() {}
