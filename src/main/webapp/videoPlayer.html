@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<style>
+			#video-player{
+				width:400px;
+				height:auto;
+			}
+		</style>
+	</head>
+	<body>
+		<video id="video-player" autoplay controls></video>
+	
+		<script>
+		const url = "http://localhost:8080/TiktokBackend/TestServlet?op=getVideo";
+		let video = document.getElementById("video-player");
+		fetch(url)
+		  .then(response => response.blob())
+		  .then(videoBlob => {
+		    let videoUrl = URL.createObjectURL(videoBlob);
+		    video.src = videoUrl;
+		  });
+		</script>
+	</body>
+</html>
