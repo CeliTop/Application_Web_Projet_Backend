@@ -2,6 +2,7 @@ package tiktokPackage;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,29 +16,26 @@ public class Video  implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	private String videoFileName;
+	// The filepath must be unique to not overwrite
+	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String fileName;
 	
-	public Video() {
-		
-	}
-	
-	public Video(String videoFileName) {
-		this.setVideoFileName(videoFileName);
-	}
+	@Column(nullable = false)
+	private String filePath;
+
+	public Video() {}
 	
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
+	public String getFileName() {
+		return fileName;
 	}
-
-	public String getVideoFileName() {
-		return videoFileName;
+	public String getFilePath() {
+		return filePath;
 	}
-
-	public void setVideoFileName(String videoFileName) {
-		this.videoFileName = videoFileName;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 }

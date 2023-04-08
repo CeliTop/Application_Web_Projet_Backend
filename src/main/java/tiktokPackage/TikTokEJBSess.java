@@ -12,6 +12,17 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Override
+	public void addCompte(Compte c) {
+		em.persist(c);
+	}
+	
+	@Override
+	public Compte getCompte(int id) {
+		Compte compte = em.find(Compte.class, id);
+		return compte;
+	}
 
 	@Override
 	public Collection<Compte> getAllComptes() {
@@ -21,14 +32,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	}
 
 	@Override
-	public void addCompte(Compte c) {
-		em.persist(c);
-	}
-
-	@Override
 	public void posterVideo(Compte c, Video video) {
-		// TODO Auto-generated method stub
-		
+		// TODO Faire le lien entre la vidéo et le compte
+		em.persist(video);
 	}
 	
 }

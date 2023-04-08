@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,8 +82,16 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String op = request.getParameter("op");
+		if (op == null) {
+			response.getWriter().println("Pas d'action demandée en POST");
+			return;
+		}
 		if (op.equals("addCompte")) {
 			String name = request.getParameter("name");
+			if (name == null) {
+				response.getWriter().println("Un compte nécessite un nom");
+				return;
+			}
 			facade.addCompte(new Compte(name));
 			
 			GsonBuilder builder = new GsonBuilder(); 
@@ -97,15 +106,47 @@ public class TestServlet extends HttpServlet {
 			response.getWriter().println(responseJson);
 		}
 		else if (op.equals("upload")) {
+			// TODO verifier que l'utilisateur est connecté à un compte
+//	        Cookie CompteIDCookie = null;
+//	        Cookie[] cookies = request.getCookies();
+//	        if (cookies != null) {
+//	            for (Cookie cookie : cookies) {
+//	                if (cookie.getName().equals("id")) {
+//	                	CompteIDCookie = cookie;
+//	                    break;
+//	                }
+//	            }
+//	        }
+//	        if (CompteIDCookie == null) {
+//	        	response.getWriter().println("L'utilisateur n'est pas connecté");
+//	        	return;
+//	        }
+//            String id = CompteIDCookie.getValue();
+//            Compte compte = facade.getCompte(Integer.parseInt(id));
+//            if (compte == null) {
+//            	response.getWriter().println("ID non reconnu");
+//            	return;
+//            }
+
+			Video video = new Video();
+			String filename = Integer.toString(video.getId());
 			Part filePart = request.getPart("file");
-			String filename = filePart.getSubmittedFileName();
+			if (filePart == null) {
+				response.getWriter().println("Pas de vidéo à uploader");
+				return;
+			}
+
 			Path parentPath =  Paths.get(getServletContext().getRealPath("/uploads"));
 			if (!Files.exists(parentPath))
 			    Files.createDirectories(parentPath);
 			String filePath = getServletContext().getRealPath("/uploads") + File.separator + filename;
 			InputStream fileContent = filePart.getInputStream();
 		    Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-		    response.getWriter().println("fichier ajouté:" + getServletContext().getRealPath("/uploads"));
+		    video.setFilePath(filePath);
+		    //TODO poster video compte - mettre vérification compte au début
+		    //facade.posterVideo(compte, video);
+
+		    response.getWriter().println("fichier ajouté: " + getServletContext().getRealPath("/uploads"));
 		}
 	}
 
