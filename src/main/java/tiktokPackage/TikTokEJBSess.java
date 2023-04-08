@@ -34,7 +34,10 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	@Override
 	public void posterVideo(Compte c, Video video) {
 		// TODO Faire le lien entre la vidéo et le compte
+		c.addVideo(video);
+		em.getTransaction().begin();
 		em.persist(video);
+		em.getTransaction().commit();
 	}
 	
 }

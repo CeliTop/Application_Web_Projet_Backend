@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 @SuppressWarnings("serial")
@@ -23,6 +24,10 @@ public class Video  implements Serializable{
 	
 	@Column(nullable = false)
 	private String filePath;
+	
+	@Column(nullable = false)
+	@ManyToOne
+	Compte compteUploader;
 
 	public Video() {}
 	
@@ -38,4 +43,11 @@ public class Video  implements Serializable{
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	public Compte getCompteUploader() {
+		return compteUploader;
+	}
+	public void setCompteUploader(Compte compteUploader) {
+		this.compteUploader = compteUploader;
+	}
+	
 }
