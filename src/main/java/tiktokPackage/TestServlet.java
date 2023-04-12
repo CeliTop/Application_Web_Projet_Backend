@@ -50,7 +50,9 @@ public class TestServlet extends HttpServlet {
 		String op = request.getParameter("op");
 		if (op != null && op.equals("getVideo")) {
 			// TODO replace sample video
-			File file = new File("/tmp/tiktokfiles/sampleVideo.mp4");
+			//File file = new File("/tmp/tiktokfiles/0");
+			File file = new File(getServletContext().getRealPath("/uploads") + "/0");
+
 	        response.setContentType("video/mp4");
 	        response.setContentLength((int) file.length());
 	        response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
@@ -82,6 +84,12 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String op = request.getParameter("op");
+		
+		GsonBuilder builder = new GsonBuilder(); 
+		builder.setPrettyPrinting(); 
+		Gson gson = builder.create();
+		HashMap<String, Object> responseMap = new HashMap<String, Object>();
+		
 		if (op == null) {
 			response.getWriter().println("Pas d'action demandée en POST");
 			return;
@@ -93,17 +101,7 @@ public class TestServlet extends HttpServlet {
 				return;
 			}
 			facade.addCompte(new Compte(name));
-			
-			GsonBuilder builder = new GsonBuilder(); 
-			builder.setPrettyPrinting(); 
-			Gson gson = builder.create();
-			HashMap<String, Object> responseMap = new HashMap<String, Object>();
 			responseMap.put("message", name + " ajouté");
-			String responseJson = gson.toJson(responseMap);
-			
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(responseJson);
 		}
 		else if (op.equals("upload")) {
 			// TODO verifier que l'utilisateur est connecté à un compte
@@ -145,9 +143,12 @@ public class TestServlet extends HttpServlet {
 		    video.setFilePath(filePath);
 		    //TODO poster video compte - mettre vérification compte au début
 		    //facade.posterVideo(compte, video);
-
-		    response.getWriter().println("fichier ajouté: " + getServletContext().getRealPath("/uploads"));
+		    responseMap.put("message", "fichier ajouté: " + getServletContext().getRealPath("/uploads") + "/" + filename + " ajouté");
 		}
+		String responseJson = gson.toJson(responseMap);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println(responseJson);
 	}
 
 }
