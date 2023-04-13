@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 @SuppressWarnings("serial")
 public class Video  implements Serializable{
 	
+	//BONJOUR
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
