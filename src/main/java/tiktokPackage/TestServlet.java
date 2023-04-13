@@ -125,7 +125,6 @@ public class TestServlet extends HttpServlet {
 //            	response.getWriter().println("ID non reconnu");
 //            	return;
 //            }
-
 			Video video = new Video();
 			String filename = Integer.toString(video.getId());
 			Part filePart = request.getPart("file");
