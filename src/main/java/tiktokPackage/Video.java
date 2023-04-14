@@ -16,8 +16,6 @@ import com.google.gson.annotations.Expose;
 @SuppressWarnings("serial")
 public class Video  implements Serializable{
 	
-	//BONJOUR
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Expose
