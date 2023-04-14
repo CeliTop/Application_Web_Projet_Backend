@@ -15,6 +15,8 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	
 	@Override
 	public void addCompte(Compte c) {
+		System.out.println("========== Compte =========");
+		System.out.println(c.getId());
 		em.persist(c);
 	}
 	
@@ -32,12 +34,21 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	}
 
 	@Override
-	public void posterVideo(Compte c, Video video) {
+	public Video posterVideo(Compte c, Video video) {
 		// TODO Faire le lien entre la vidéo et le compte
-		c.addVideo(video);
-		em.getTransaction().begin();
 		em.persist(video);
-		em.getTransaction().commit();
+		System.out.println("========== Video =========");
+		System.out.println(video.toString());
+		Compte cdatabase = em.find(Compte.class, c.getId());
+		System.out.println(cdatabase);
+		System.out.println(video);
+		cdatabase.addVideo(video);
+		return video;
+	}
+	
+	public Video getRandomVIdeo() {
+		TypedQuery<Video> req = em.createQuery("select v from Video v ORDER BY RAND()",Video.class).setMaxResults(1);
+		return req.getResultList().get(0);
 	}
 	
 }

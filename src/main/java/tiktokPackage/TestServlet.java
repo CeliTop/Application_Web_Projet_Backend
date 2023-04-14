@@ -47,45 +47,44 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String op = request.getParameter("op");
+		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
+		builder.setPrettyPrinting(); 
+		Gson gson = builder.create();
+		HashMap<String, Object> responseMap = new HashMap<String, Object>();
+	    
+	    String op = request.getParameter("op");
 		if (op != null && op.equals("getVideo")) {
 			// TODO replace sample video
 			//File file = new File("/tmp/tiktokfiles/0");
-			File file = new File(getServletContext().getRealPath("/uploads") + "/0");
-
-	        response.setContentType("video/mp4");
-	        response.setContentLength((int) file.length());
-	        response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
-	        FileInputStream inputStream = new FileInputStream(file);
-	        byte[] buffer = new byte[4096];
-	        int bytesRead;
-	        while ((bytesRead = inputStream.read(buffer)) != -1) {
-	            response.getOutputStream().write(buffer, 0, bytesRead);
-	        }
-	        inputStream.close();
+			Video video = facade.getRandomVIdeo();
+			responseMap.put("video", video);
+			
 		} else {	
-			HashMap<String, Object> responseMap = new HashMap<String, Object>();
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
-			
-			GsonBuilder builder = new GsonBuilder(); 
-			builder.setPrettyPrinting(); 
-			Gson gson = builder.create();
-			String responseJson = gson.toJson(responseMap);
-			
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(responseJson);
 		}
+		String responseJson = gson.toJson(responseMap);
+		response.addHeader("Access-Control-Allow-Origin", "*");
+	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+	    response.addHeader("Access-Control-Max-Age", "1728000");
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println(responseJson);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+	    response.addHeader("Access-Control-Max-Age", "1728000");
+	    
 		String op = request.getParameter("op");
-		
-		GsonBuilder builder = new GsonBuilder(); 
+		System.out.println(op);
+		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
 		Gson gson = builder.create();
 		HashMap<String, Object> responseMap = new HashMap<String, Object>();
@@ -126,7 +125,10 @@ public class TestServlet extends HttpServlet {
 //            	return;
 //            }
 			Video video = new Video();
+			Compte compte = facade.getCompte(1);
+			video = facade.posterVideo(compte, video);
 			String filename = Integer.toString(video.getId());
+			System.out.println("JESUISLA");
 			Part filePart = request.getPart("file");
 			if (filePart == null) {
 				response.getWriter().println("Pas de vidéo à uploader");
@@ -139,9 +141,7 @@ public class TestServlet extends HttpServlet {
 			String filePath = getServletContext().getRealPath("/uploads") + File.separator + filename;
 			InputStream fileContent = filePart.getInputStream();
 		    Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-		    video.setFilePath(filePath);
 		    //TODO poster video compte - mettre vérification compte au début
-		    //facade.posterVideo(compte, video);
 		    responseMap.put("message", "fichier ajouté: " + getServletContext().getRealPath("/uploads") + "/" + filename + " ajouté");
 		}
 		String responseJson = gson.toJson(responseMap);

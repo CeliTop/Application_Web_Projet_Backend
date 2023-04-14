@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @SuppressWarnings("serial")
 public class Video  implements Serializable{
@@ -18,17 +20,11 @@ public class Video  implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Expose
 	private int id;
 	
-	// The filepath must be unique to not overwrite
-	@Column(nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String fileName;
-	
-	@Column(nullable = false)
-	private String filePath;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@Expose
 	Compte compteUploader;
 
 	public Video() {}
@@ -36,20 +32,14 @@ public class Video  implements Serializable{
 	public int getId() {
 		return id;
 	}
-	public String getFileName() {
-		return fileName;
-	}
-	public String getFilePath() {
-		return filePath;
-	}
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
 	public Compte getCompteUploader() {
 		return compteUploader;
 	}
 	public void setCompteUploader(Compte compteUploader) {
 		this.compteUploader = compteUploader;
 	}
-	
+	public String toString() {
+		return "Video id: " + id + " uploader: " + compteUploader;
+	}
+
 }

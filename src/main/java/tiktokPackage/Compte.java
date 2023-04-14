@@ -12,19 +12,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @SuppressWarnings("serial")
 public class Compte implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Expose
 	private int id;
 
 	@Column(nullable = false)
+	@Expose
 	private String nom;
 	
-	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.EAGER)
-	Collection<Video> videos;
+	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
+	private Collection<Video> videos;
 	
 	public Compte() {
 		
@@ -51,7 +55,9 @@ public class Compte implements Serializable{
 	}
 
 	public void addVideo(Video video) {
+		System.out.println(this.videos);
 		this.videos.add(video);
+		System.out.println(this.videos);
 		video.setCompteUploader(this);
 	}
 }
