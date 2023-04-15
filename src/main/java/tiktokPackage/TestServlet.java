@@ -123,17 +123,7 @@ public class TestServlet extends HttpServlet {
 		if (op == null) {
 			response.getWriter().println("Pas d'action demandée en POST");
 			return;
-		}
-		if (op.equals("addCompte")) {
-			String name = request.getParameter("name");
-			if (name == null) {
-				response.getWriter().println("Un compte nécessite un nom");
-				return;
-			}
-			facade.addCompte(new Compte(name));
-			responseMap.put("message", name + " ajouté");
-		}
-		else if (op.equals("upload")) {
+		} else if (op.equals("upload")) {
 			// TODO verifier que l'utilisateur est connecté à un compte
 //	        Cookie CompteIDCookie = null;
 //	        Cookie[] cookies = request.getCookies();

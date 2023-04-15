@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 @Singleton
@@ -14,10 +15,15 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	private EntityManager em;
 	
 	@Override
-	public void addCompte(Compte c) {
+	public boolean addCompte(Compte c) {
 		System.out.println("========== Compte =========");
 		System.out.println(c.getId());
-		em.persist(c);
+		try {	
+			em.persist(c);
+			return true;
+		} catch (PersistenceException e) {
+			return false;
+		}
 	}
 	
 	@Override
@@ -28,7 +34,7 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 
 	@Override
 	public Collection<Compte> getAllComptes() {
-		TypedQuery<Compte> req = em.createQuery("select c from Compte c",
+		TypedQuery<Compte> req = em.createQuery("SELECT c FROM Compte c",
 				Compte.class);
 		return req.getResultList();
 	}
@@ -47,13 +53,23 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	}
 	
 	public Video getRandomVIdeo() {
-		TypedQuery<Video> req = em.createQuery("select v from Video v ORDER BY RAND()",Video.class).setMaxResults(1);
+		TypedQuery<Video> req = em.createQuery("SELECT v FROM Video v ORDER BY RAND()",Video.class).setMaxResults(1);
 		return req.getResultList().get(0);
 	}
 	
 	public Video getVideoFromID(int id) {
 		Video video = em.find(Video.class, id);
 		return video;
+	}
+
+	@Override
+	public Compte login(Compte c) {
+		TypedQuery<Compte> req = em.createQuery("SELECT c FROM Compte c WHERE nom=?1",
+				Compte.class);
+		req.setParameter(1, c.getNom());
+		Compte dbCompte = req.getResultList().get(0);
+		if (dbCompte == null || !(dbCompte.getPassword().equals(c.getPassword()))) return null;
+		return dbCompte;
 	}
 	
 }

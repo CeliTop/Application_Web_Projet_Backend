@@ -23,9 +23,11 @@ public class Compte implements Serializable{
 	@Expose
 	private int id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique= true)
 	@Expose
 	private String nom;
+	
+	private String password;
 	
 	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
 	private Collection<Video> videos;
@@ -34,8 +36,9 @@ public class Compte implements Serializable{
 		
 	}
 	
-	public Compte(String nom) {
-		this.setNom(nom);
+	public Compte(String nom, String password) {
+		this.nom = nom;
+		this.password = password;
 	}
 	
 	public int getId() {
@@ -60,4 +63,9 @@ public class Compte implements Serializable{
 		System.out.println(this.videos);
 		video.setCompteUploader(this);
 	}
+
+	public String getPassword() {
+		return password;
+	}
+	
 }
