@@ -11,4 +11,5 @@ public interface BackendInterfaceRemote {
 	public Collection<Compte> getAllComptes();
 	public Video posterVideo(Compte c, Video video);
 	public Video getRandomVIdeo();
+	public Video getVideoFromID(int id);
 }

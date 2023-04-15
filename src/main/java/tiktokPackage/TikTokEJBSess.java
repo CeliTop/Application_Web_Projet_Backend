@@ -51,4 +51,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		return req.getResultList().get(0);
 	}
 	
+	public Video getVideoFromID(int id) {
+		Video video = em.find(Video.class, id);
+		return video;
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,8 +29,8 @@ import com.google.gson.GsonBuilder;
  * Servlet implementation class TestServlet
  */
 @WebServlet("/TestServlet")
-@MultipartConfig(location="/tiktokBackend", fileSizeThreshold=1024*1024, 
-    maxFileSize=1024*1024*5, maxRequestSize=1024*1024*5*5)
+@MultipartConfig(location="/tmp", fileSizeThreshold=1024*1024, 
+    maxFileSize=1024*1024*10, maxRequestSize=1024*1024*5*5)
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -53,12 +54,43 @@ public class TestServlet extends HttpServlet {
 		HashMap<String, Object> responseMap = new HashMap<String, Object>();
 	    
 	    String op = request.getParameter("op");
-		if (op != null && op.equals("getVideo")) {
+		if (op != null && op.equals("getRandomVideo")) {
 			// TODO replace sample video
-			//File file = new File("/tmp/tiktokfiles/0");
 			Video video = facade.getRandomVIdeo();
 			responseMap.put("video", video);
 			
+		} else if (op != null && op.equals("getVideo")) {
+			// TODO replace sample video
+			//File file = new File("/tmp/tiktokfiles/0");
+			int videoId = Integer.parseInt(request.getParameter("id"));
+			Video video = facade.getVideoFromID(videoId);
+			if (video==null) {
+				response.getWriter().println("La vidéo n'a pas été trouvé");
+				return;
+			}
+		    String filePath = System.getProperty("jboss.server.data.dir") + File.separator + "uploads"+ File.separator + video.getId();
+		    File file = new File(filePath);
+
+		    if (file.exists()) {
+		      response.setContentType("video/mp4");
+		      response.setContentLength((int) file.length());
+		      response.setHeader("Content-Disposition", "attachment; filename=\"" + video.getId() + "\"");
+
+		      FileInputStream inputStream = new FileInputStream(file);
+		      OutputStream outputStream = response.getOutputStream();
+
+		      byte[] buffer = new byte[1024];
+		      int bytesRead = 0;
+
+		      while ((bytesRead = inputStream.read(buffer)) != -1) {
+		        outputStream.write(buffer, 0, bytesRead);
+		      }
+
+		      inputStream.close();
+		      outputStream.flush();
+		      outputStream.close();
+		      return;
+		    }
 		} else {	
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
@@ -133,14 +165,15 @@ public class TestServlet extends HttpServlet {
 				return;
 			}
 
-			Path parentPath =  Paths.get(getServletContext().getRealPath("/uploads"));
+			//Path parentPath =  Paths.get(getServletContext().getRealPath("/uploads"));
+			Path parentPath = Paths.get(System.getProperty("jboss.server.data.dir")+"/uploads");
 			if (!Files.exists(parentPath))
 			    Files.createDirectories(parentPath);
-			String filePath = getServletContext().getRealPath("/uploads") + File.separator + filename;
+			String filePath = parentPath + File.separator + filename;
 			InputStream fileContent = filePart.getInputStream();
 		    Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 		    //TODO poster video compte - mettre vérification compte au début
-		    responseMap.put("message", "fichier ajouté: " + getServletContext().getRealPath("/uploads") + "/" + filename + " ajouté");
+		    responseMap.put("message", "fichier ajouté: " + filePath + " ajouté");
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.setContentType("application/json");
