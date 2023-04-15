@@ -16,8 +16,6 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	
 	@Override
 	public boolean addCompte(Compte c) {
-		System.out.println("========== Compte =========");
-		System.out.println(c.getId());
 		try {	
 			em.persist(c);
 			return true;
@@ -43,11 +41,7 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	public Video posterVideo(Compte c, Video video) {
 		// TODO Faire le lien entre la vidéo et le compte
 		em.persist(video);
-		System.out.println("========== Video =========");
-		System.out.println(video.toString());
 		Compte cdatabase = em.find(Compte.class, c.getId());
-		System.out.println(cdatabase);
-		System.out.println(video);
 		cdatabase.addVideo(video);
 		return video;
 	}

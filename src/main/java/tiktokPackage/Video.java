@@ -35,8 +35,8 @@ public class Video  implements Serializable{
 	public void setCompteUploader(Compte compteUploader) {
 		this.compteUploader = compteUploader;
 	}
+	@Override
 	public String toString() {
-		return "Video id: " + id + " uploader: " + compteUploader;
+		return "Video [ id: " + id + " ,uploader: " + compteUploader.toString() + " ]";
 	}
-
 }

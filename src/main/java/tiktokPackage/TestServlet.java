@@ -163,7 +163,8 @@ public class TestServlet extends HttpServlet {
 			InputStream fileContent = filePart.getInputStream();
 		    Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 		    //TODO poster video compte - mettre vérification compte au début
-		    responseMap.put("message", "fichier ajouté: " + filePath + " ajouté");
+		    responseMap.put("message", video.toString());
+		    responseMap.put("details", "fichier ajouté à l'adresse: " + filePath);
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.setContentType("application/json");

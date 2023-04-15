@@ -58,14 +58,17 @@ public class Compte implements Serializable{
 	}
 
 	public void addVideo(Video video) {
-		System.out.println(this.videos);
 		this.videos.add(video);
-		System.out.println(this.videos);
 		video.setCompteUploader(this);
 	}
 
 	public String getPassword() {
 		return password;
+	}
+	
+	@Override
+	public String toString() {
+		return "Compte [ id: " + id + " ,nom: " + nom + " ]";
 	}
 	
 }
