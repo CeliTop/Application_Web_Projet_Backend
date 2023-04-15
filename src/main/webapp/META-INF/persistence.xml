@@ -6,14 +6,16 @@
         transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         
-        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+<!--         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source> -->
+		
+		<jta-data-source>java:/H2tiktokDS</jta-data-source>
         
         <class>tiktokPackage.Compte</class>
         <class>tiktokPackage.Video</class>
         
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="true" />
         </properties>
     </persistence-unit>
