@@ -48,6 +48,11 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.addHeader("Access-Control-Allow-Origin", "*");
+	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+	    response.addHeader("Access-Control-Max-Age", "1728000");
+		
 		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
 		Gson gson = builder.create();
@@ -124,29 +129,29 @@ public class TestServlet extends HttpServlet {
 			response.getWriter().println("Pas d'action demandée en POST");
 			return;
 		} else if (op.equals("upload")) {
-			// TODO verifier que l'utilisateur est connecté à un compte
-//	        Cookie CompteIDCookie = null;
-//	        Cookie[] cookies = request.getCookies();
-//	        if (cookies != null) {
-//	            for (Cookie cookie : cookies) {
-//	                if (cookie.getName().equals("id")) {
-//	                	CompteIDCookie = cookie;
-//	                    break;
-//	                }
-//	            }
-//	        }
-//	        if (CompteIDCookie == null) {
-//	        	response.getWriter().println("L'utilisateur n'est pas connecté");
-//	        	return;
-//	        }
-//            String id = CompteIDCookie.getValue();
-//            Compte compte = facade.getCompte(Integer.parseInt(id));
-//            if (compte == null) {
-//            	response.getWriter().println("ID non reconnu");
-//            	return;
-//            }
+	        Cookie CompteIDCookie = null;
+	        Cookie[] cookies = request.getCookies();
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("loginID")) {
+	                	CompteIDCookie = cookie;
+	                    break;
+	                }
+	            }
+	        }
+	        if (CompteIDCookie == null) {
+	        	response.setStatus(403);
+	        	response.getWriter().println("L'utilisateur n'est pas connecté");
+	        	return;
+	        }
+            String id = CompteIDCookie.getValue();
+            Compte compte = facade.getCompte(Integer.parseInt(id));
+            if (compte == null) {
+            	response.setStatus(403);
+            	response.getWriter().println("ID non reconnu");
+            	return;
+            }
 			Video video = new Video();
-			Compte compte = facade.getCompte(1);
 			video = facade.posterVideo(compte, video);
 			String filename = Integer.toString(video.getId());
 			Part filePart = request.getPart("file");
