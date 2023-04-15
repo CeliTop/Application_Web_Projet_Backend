@@ -35,10 +35,6 @@ public class AuthenticationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin", "*");
-	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
-	    response.addHeader("Access-Control-Max-Age", "1728000");
 
 	    GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
@@ -75,10 +71,6 @@ public class AuthenticationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin", "*");
-	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
-	    response.addHeader("Access-Control-Max-Age", "1728000");
 
 	    GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 

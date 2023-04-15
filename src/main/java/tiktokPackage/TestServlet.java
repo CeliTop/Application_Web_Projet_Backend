@@ -48,10 +48,6 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin", "*");
-	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
-	    response.addHeader("Access-Control-Max-Age", "1728000");
 		
 		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
@@ -101,10 +97,7 @@ public class TestServlet extends HttpServlet {
 			responseMap.put("comptes", comptes);
 		}
 		String responseJson = gson.toJson(responseMap);
-		response.addHeader("Access-Control-Allow-Origin", "*");
-	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
-	    response.addHeader("Access-Control-Max-Age", "1728000");
+
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().println(responseJson);
@@ -114,10 +107,6 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin", "*");
-	    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
-	    response.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
-	    response.addHeader("Access-Control-Max-Age", "1728000");
 	    
 		String op = request.getParameter("op");
 		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
