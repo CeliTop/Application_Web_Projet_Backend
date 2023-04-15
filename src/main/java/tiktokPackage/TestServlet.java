@@ -28,7 +28,7 @@ import com.google.gson.GsonBuilder;
  * Servlet implementation class TestServlet
  */
 @WebServlet("/TestServlet")
-@MultipartConfig(location="/tmp", fileSizeThreshold=1024*1024, 
+@MultipartConfig(location="/tiktokBackend", fileSizeThreshold=1024*1024, 
     maxFileSize=1024*1024*5, maxRequestSize=1024*1024*5*5)
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -83,7 +83,6 @@ public class TestServlet extends HttpServlet {
 	    response.addHeader("Access-Control-Max-Age", "1728000");
 	    
 		String op = request.getParameter("op");
-		System.out.println(op);
 		GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
 		Gson gson = builder.create();
@@ -128,7 +127,6 @@ public class TestServlet extends HttpServlet {
 			Compte compte = facade.getCompte(1);
 			video = facade.posterVideo(compte, video);
 			String filename = Integer.toString(video.getId());
-			System.out.println("JESUISLA");
 			Part filePart = request.getPart("file");
 			if (filePart == null) {
 				response.getWriter().println("Pas de vidéo à uploader");
