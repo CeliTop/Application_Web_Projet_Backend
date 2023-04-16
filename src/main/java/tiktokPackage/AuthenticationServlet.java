@@ -35,7 +35,11 @@ public class AuthenticationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS, POST, PUT");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+        
 	    GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 
 		Gson gson = builder.create();
@@ -52,8 +56,9 @@ public class AuthenticationServlet extends HttpServlet {
 			}
 			Compte dbCompte = facade.login(new Compte(name, password));
 			if (dbCompte != null) {
-				Cookie IDCookie = new Cookie("loginID", Integer.toString(dbCompte.getId()));
-				response.addCookie(IDCookie);
+				//Cookie IDCookie = new Cookie("loginID", Integer.toString(dbCompte.getId()));
+				//response.addCookie(IDCookie);
+				response.setHeader("Set-Cookie", String.format("loginID=%x; SameSite=None; Secure", dbCompte.getId()));
 				responseMap.put("message", name + " connecté !");
 			} else {
 				responseMap.put("message", "L'utilisateur n'existe pas ou le mot de passe est erroné");
@@ -71,6 +76,10 @@ public class AuthenticationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS, POST, PUT");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
 	    GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation(); 
 		builder.setPrettyPrinting(); 

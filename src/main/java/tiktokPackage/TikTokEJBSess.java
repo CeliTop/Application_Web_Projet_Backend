@@ -1,6 +1,7 @@
 package tiktokPackage;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
@@ -61,7 +62,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		TypedQuery<Compte> req = em.createQuery("SELECT c FROM Compte c WHERE nom=?1",
 				Compte.class);
 		req.setParameter(1, c.getNom());
-		Compte dbCompte = req.getResultList().get(0);
+		List<Compte>  comptes = req.getResultList();
+		if (comptes.size() == 0) return null;
+		Compte dbCompte = comptes.get(0);
 		if (dbCompte == null || !(dbCompte.getPassword().equals(c.getPassword()))) return null;
 		return dbCompte;
 	}
