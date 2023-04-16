@@ -14,45 +14,6 @@ Pour lancer le serveur back et y accéder avec une adresse différente de 127.0.
 ```console
 ./bin/standalone.sh -b 0.0.0.0
 ```
-## Cors
-S'il y a ds problèmes de CORS entre le front et le back, il faut configuer JBOSS pour accepter les requetes Cross-Origin.
-Il faut compléter le tag `subsystem xmlns="urn:jboss:domain:undertow:12.0"` du fichier `EAP-7.4.0/standalone/standalone.xml` :
-```xml
-<subsystem xmlns="urn:jboss:domain:undertow:12.0" default-server="default-server" default-virtual-host="default-host" default-servlet-container="default" default-security-domain="other" statistics-enabled="${wildfly.undertow.statistics-enabled:${wildfly.statistics-enabled:false}}">
-            <buffer-cache name="default"/>
-            <server name="default-server">
-                <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
-                <https-listener name="https" socket-binding="https" security-realm="ApplicationRealm" enable-http2="true"/>
-                <host name="default-host" alias="localhost">
-                    <location name="/" handler="welcome-content"/>
-                    <http-invoker security-realm="ApplicationRealm"/>
-                    <filter-ref name="server-header"/>
-                    <filter-ref name="x-powered-by-header"/>
-                    <filter-ref name="Access-Control-Allow-Origin"/>
-                    <filter-ref name="Access-Control-Allow-Methods"/>
-                    <filter-ref name="Access-Control-Allow-Headers"/>
-                    <filter-ref name="Access-Control-Allow-Credentials"/>
-                    <filter-ref name="Access-Control-Max-Age"/>
-                </host>
-            </server>
-            <servlet-container name="default">
-                <jsp-config/>
-                <websockets/>
-            </servlet-container>
-            <handlers>
-                <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
-            </handlers>
-            <filters>
-                <response-header name="server-header" header-name="Server" header-value="WildFly/10"/>
-                <response-header name="x-powered-by-header" header-name="X-Powered-By" header-value="Undertow/1"/>
-                <response-header name="Access-Control-Allow-Origin" header-name="Access-Control-Allow-Origin" header-value="*"/>
-                <response-header name="Access-Control-Allow-Methods" header-name="Access-Control-Allow-Methods" header-value="GET, POST, OPTIONS, PUT"/>
-                <response-header name="Access-Control-Allow-Headers" header-name="Access-Control-Allow-Headers" header-value="accept, authorization,  content-type, x-requested-with"/>
-                <response-header name="Access-Control-Allow-Credentials" header-name="Access-Control-Allow-Credentials" header-value="true"/>
-                <response-header name="Access-Control-Max-Age" header-name="Access-Control-Max-Age" header-value="1"/>
-            </filters>
-        </subsystem>
-```
 
 ## BDD persistente
 Pour créer la base de données en JBOSS.
