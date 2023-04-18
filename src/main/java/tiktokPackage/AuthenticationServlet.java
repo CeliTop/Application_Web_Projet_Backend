@@ -58,7 +58,7 @@ public class AuthenticationServlet extends HttpServlet {
 			if (dbCompte != null) {
 				//Cookie IDCookie = new Cookie("loginID", Integer.toString(dbCompte.getId()));
 				//response.addCookie(IDCookie);
-				response.setHeader("Set-Cookie", String.format("loginID=%x; SameSite=None; Secure", dbCompte.getId()));
+				response.setHeader("Set-Cookie", String.format("loginID=%d; SameSite=None; Secure", dbCompte.getId()));
 				responseMap.put("message", name + " connecté !");
 			} else {
 				responseMap.put("message", "L'utilisateur n'existe pas ou le mot de passe est erroné");
