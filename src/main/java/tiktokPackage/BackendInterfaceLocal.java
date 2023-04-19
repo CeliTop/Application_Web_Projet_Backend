@@ -6,11 +6,51 @@ import javax.ejb.Local;
 
 @Local
 public interface BackendInterfaceLocal {
+	/**
+	 * Add an account to the database 
+	 * @param c the account that need to be added to the database
+	 * @return true if the account is added to the database, false if an error occured
+	 */
 	public boolean addCompte(Compte c);
+	
+	/**
+	 * Get an account from it's id
+	 * @param id of the account that need to be accessed
+	 * @return the account (null if not found)
+	 */
 	public Compte getCompte(int id);
+	
+	/**
+	 * Get all the accounts of the database
+	 * @return every accounts
+	 */
 	public Collection<Compte> getAllComptes();
+	
+	/**
+	 * Post a video to the database
+	 * @param c the account to which the video will be linked
+	 * @param video the video itself
+	 * @return the new video object created by the database (with extended infos)
+	 */
 	public Video posterVideo(Compte c, Video video);
+	
+	/**
+	 * get a random video object from the database
+	 * @return a random video
+	 */
 	public Video getRandomVIdeo();
+	
+	/**
+	 * get the video file from a video id
+	 * @param id the id of the video wanted
+	 * @return the video file
+	 */
 	public Video getVideoFromID(int id);
+	
+	/**
+	 * Find the account from a name-password couple
+	 * @param c the pseudo-account provided
+	 * @return the database account if a match is found, null otherwise
+	 */
 	public Compte login(Compte c);
 }
