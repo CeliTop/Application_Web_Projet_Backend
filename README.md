@@ -30,6 +30,6 @@ Ajouter un datasource de type H2 avec en JNDI `java:/H2tiktokDS` et Connection U
 Il faut probablement adapter le chemin apres `file:`, par exemple `/home/user/EAP-7.4.0/standalone/data/tiktokDB`
 
 ## TODO
-- Faire l'entity commentaire
+- Faire l'entity commentaire: texte, compte_uploader, nb_likes, date
 - entity VIDEO: ajouter hashtag, description, commentaires, lieux, nb_vues
 - entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes
