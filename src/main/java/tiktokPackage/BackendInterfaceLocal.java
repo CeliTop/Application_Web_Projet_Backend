@@ -41,9 +41,9 @@ public interface BackendInterfaceLocal {
 	public Video getRandomVIdeo();
 	
 	/**
-	 * get the video file from a video id
+	 * Get the video object from a video id
 	 * @param id the id of the video wanted
-	 * @return the video file
+	 * @return the video object
 	 */
 	public Video getVideoFromID(int id);
 	
@@ -53,4 +53,13 @@ public interface BackendInterfaceLocal {
 	 * @return the database account if a match is found, null otherwise
 	 */
 	public Compte login(Compte c);
+	
+	/**
+	 * Ajouter un commentaire de la part du compte c sur la video v
+	 * @param commentaireText le texte du commentaire
+	 * @param compteID l'id du compte qui upload le commentaire
+	 * @param v la video qui est commenté
+	 * @return l'objet commentaire enregistré dans la bdd
+	 */
+	public Commentaire addCommentaire(String commentaireText, int compteID, int videoID);
 }

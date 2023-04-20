@@ -121,21 +121,12 @@ public class DataServlet extends HttpServlet {
 			response.setStatus(400);
 		} else if (op.equals("upload")) {
 			// Get the cookie of the request
-			Cookie CompteIDCookie = null;
-			Cookie[] cookies = request.getCookies();
-			if (cookies != null) {
-				for (Cookie cookie : cookies) {
-					if (cookie.getName().equals("loginID")) {
-						CompteIDCookie = cookie;
-						break;
-					}
-				}
-			}
-			if (CompteIDCookie == null) {
+			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+			if (LoginIDCookie == null) {
 				response.setStatus(403);
 				responseMap.put("message", "L'utilisateur n'est pas connecté");
 			} else {
-				String id = CompteIDCookie.getValue();
+				String id = LoginIDCookie.getValue();
 				Compte compte = facade.getCompte(Integer.parseInt(id));
 				if (compte == null) {
 					response.setStatus(403);
@@ -159,6 +150,34 @@ public class DataServlet extends HttpServlet {
 					responseMap.put("details", "fichier ajouté à l'adresse: " + filePath);
 				}
 			}
+		} else if (op.equals("addCommentaire")) {
+			String text = request.getParameter("text");
+			String videoID = request.getParameter("videoID");
+			if (text == null || videoID == null) {
+				responseMap.put("message", "Parametre manquant");
+				response.setStatus(400);
+			} else {
+				Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+				if (LoginIDCookie == null) {
+					response.setStatus(403);
+					responseMap.put("message", "L'utilisateur n'est pas connecté");
+				} else {
+					String id = LoginIDCookie.getValue();
+					Compte compte = facade.getCompte(Integer.parseInt(id));
+					if (compte == null) {
+						response.setStatus(403);
+						responseMap.put("message", "LoginID non reconnu");
+					} else {
+						Commentaire commentaire = facade.addCommentaire(text, compte.getId(), Integer.parseInt(videoID));
+						if (commentaire == null) {
+							response.setStatus(400);
+							responseMap.put("message", "Le commentaire n'as pas été uploadé");
+						} else {
+							responseMap.put("message", commentaire);
+						}
+					}
+				}
+			} 
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);

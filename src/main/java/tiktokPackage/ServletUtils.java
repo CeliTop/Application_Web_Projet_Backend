@@ -1,5 +1,6 @@
 package tiktokPackage;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,5 +17,18 @@ public class ServletUtils {
         response.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
         response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+	}
+	
+	static Cookie getLoginIDCookie(Cookie[] cookies) {
+		Cookie LoginIDCookie = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("loginID")) {
+					LoginIDCookie = cookie;
+					break;
+				}
+			}
+		}
+		return LoginIDCookie;
 	}
 }

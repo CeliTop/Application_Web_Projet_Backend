@@ -1,6 +1,7 @@
 package tiktokPackage;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.google.gson.annotations.Expose;
 
@@ -23,6 +25,10 @@ public class Video  implements Serializable{
 	@ManyToOne(fetch=FetchType.EAGER)
 	@Expose
 	Compte compteUploader;
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	@Expose
+	Collection<Commentaire> commentaires;
 
 	public Video() {}
 	
@@ -34,6 +40,12 @@ public class Video  implements Serializable{
 	}
 	public void setCompteUploader(Compte compteUploader) {
 		this.compteUploader = compteUploader;
+	}
+	public Collection<Commentaire> getCommentaires() {
+		return commentaires;
+	}
+	public void addCommentaire(Commentaire commentaire) {
+		this.commentaires.add(commentaire);
 	}
 	@Override
 	public String toString() {

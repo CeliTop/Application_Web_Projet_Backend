@@ -1,6 +1,7 @@
 package tiktokPackage;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Singleton;
@@ -40,7 +41,6 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 
 	@Override
 	public Video posterVideo(Compte c, Video video) {
-		// TODO Faire le lien entre la vidéo et le compte
 		em.persist(video);
 		Compte cdatabase = em.find(Compte.class, c.getId());
 		cdatabase.addVideo(video);
@@ -69,4 +69,14 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		return dbCompte;
 	}
 	
+	@Override
+	public Commentaire addCommentaire(String commentaireText, int compteID, int videoID) {
+		Compte c = getCompte(compteID);
+		Video v = getVideoFromID(videoID);
+		if (c==null || v==null) {return null;}
+		Commentaire commentaire = new Commentaire(commentaireText, c, 0, new Date());
+		em.persist(commentaire);
+		v.addCommentaire(commentaire);
+		return commentaire;
+	}
 }
