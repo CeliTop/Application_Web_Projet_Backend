@@ -20,7 +20,7 @@ Si les requêtes fetch depuis le front-end sont bloquées, il faut entrer l'adre
 Pour créer la base de données en JBOSS.
 Créer un utilisateur admin jboss avec:
 ```console
-./bin/add_user.sh
+./bin/add-user.sh
 ```
 Puis aller sur la console de management une fois le serveur lancé (généralement localhost:9990)
 ```console
