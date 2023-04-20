@@ -14,6 +14,7 @@ Pour lancer le serveur back et y accéder avec une adresse différente de 127.0.
 ```console
 ./bin/standalone.sh -b 0.0.0.0
 ```
+Si les requêtes fetch depuis le front-end sont bloquées, il faut entrer l'adresse du fetch directement dans le navigateur pour autoriser le certificat auto-signé.
 
 ## BDD persistente
 Pour créer la base de données en JBOSS.
