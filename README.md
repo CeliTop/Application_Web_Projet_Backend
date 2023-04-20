@@ -1,4 +1,4 @@
-# Projet Application Web
+# Projet Application Web - Backend
 ## _Tiktok like website_
 
 Dépot Git du backend Java pour le projet d'application web de l'ENSEEIHT.
