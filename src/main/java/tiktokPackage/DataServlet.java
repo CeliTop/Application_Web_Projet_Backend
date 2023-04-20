@@ -64,6 +64,14 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getRandomVideo")) {
 			Video video = facade.getRandomVIdeo();
 			responseMap.put("video", video);
+		} else if (op.equals("getVideoInfos")) {
+			int videoId = Integer.parseInt(request.getParameter("id"));
+			Video video = facade.getVideoFromID(videoId);
+			if (video == null) {
+				response.getWriter().println("La vidéo n'a pas été trouvé");
+				return;
+			}
+			responseMap.put("message", video);
 		} else if (op.equals("getVideo")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
@@ -116,7 +124,7 @@ public class DataServlet extends HttpServlet {
 		Gson gson = builder.create();
 		HashMap<String, Object> responseMap = new HashMap<String, Object>();
 
-		if (op == null) {
+			if (op == null) {
 			responseMap.put("message", "Parametre manquant");
 			response.setStatus(400);
 		} else if (op.equals("upload")) {
