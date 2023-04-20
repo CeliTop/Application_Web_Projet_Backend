@@ -30,7 +30,7 @@ Ajouter un datasource de type H2 avec en JNDI `java:/H2tiktokDS` et Connection U
 Il faut probablement adapter le chemin apres `file:`, par exemple `/home/user/EAP-7.4.0/standalone/data/tiktokDB`
 
 ## Analyse de la BDD
-En téléchargeant [h2-console](https://developers.redhat.com/quickstarts/eap-archive/h2-console), puis en extrayant le `.war` situé dans le `zip/h2-console/` et en le déployant dans le dossier `standalone/deployments`, il est possible d'acceder directement à la bdd en utilisant le login et mdp par défaut `SA` et le bon jdbc url utilisé dans le datasource.
+En téléchargeant [h2-console](https://developers.redhat.com/quickstarts/eap-archive/h2-console), puis en extrayant le `.war` situé dans le `zip/h2-console/` et en le déployant dans le dossier `standalone/deployments`, il est possible d'acceder directement à la bdd en utilisant le login et mdp par défaut `SA` et le bon jdbc url utilisé dans le datasource sur le lien `http://localhost:8080/h2-console/`.
 
 ## TODO
 - Faire l'entity commentaire: texte, compte_uploader, nb_likes, date
