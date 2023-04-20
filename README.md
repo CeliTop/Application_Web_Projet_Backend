@@ -29,6 +29,9 @@ Configuration > Subsystems > DataSources and Drivers > DataSources
 Ajouter un datasource de type H2 avec en JNDI `java:/H2tiktokDS` et Connection URL `jdbc:h2:file:~/tiktokDB;DB_CLOSE_DELAY=-1`
 Il faut probablement adapter le chemin apres `file:`, par exemple `/home/user/EAP-7.4.0/standalone/data/tiktokDB`
 
+## Analyse de la BDD
+En téléchargent [h2-console](https://developers.redhat.com/quickstarts/eap-archive/h2-console) et en le déployant le war dans le dossier standalone/deployments, il est possible d'acceder directement à la bdd en utilisant le login et mdp par défaut `SA` et le bon jdbc url utilisé dans le datasource.
+
 ## TODO
 - Faire l'entity commentaire: texte, compte_uploader, nb_likes, date
 - entity VIDEO: ajouter hashtag, description, commentaires, lieux, nb_vues
