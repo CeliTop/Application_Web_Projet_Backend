@@ -32,4 +32,4 @@ Il faut probablement adapter le chemin apres `file:`, par exemple `/home/user/EA
 ## TODO
 - Faire l'entity commentaire: texte, compte_uploader, nb_likes, date
 - entity VIDEO: ajouter hashtag, description, commentaires, lieux, nb_vues
-- entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes
+- entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes, surnom
