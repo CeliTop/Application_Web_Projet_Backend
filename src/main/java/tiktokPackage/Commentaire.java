@@ -81,6 +81,7 @@ public class Commentaire {
 		return id;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Commentaire [ id: " + id + " ,\nuploader: " + compteUploader + " ,\ntexte: " +  text + " ,\nLikes: " + nombreLikes + " ,\ndate: " + date + "]";
