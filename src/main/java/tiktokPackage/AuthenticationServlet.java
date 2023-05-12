@@ -63,7 +63,7 @@ public class AuthenticationServlet extends HttpServlet {
 				} else {
 					response.setHeader("Set-Cookie",
 							String.format("loginID=%d; SameSite=None; Secure", dbCompte.getId()));
-					responseMap.put("message", dbCompte + " connecté !");
+					responseMap.put("compte", dbCompte);
 				}
 			}
 		}
