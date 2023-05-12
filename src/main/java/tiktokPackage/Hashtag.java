@@ -21,6 +21,10 @@ public class Hashtag implements Serializable{
 	private Collection<Video> videos;
 	
 	public Hashtag() {}
+	
+	public Hashtag(String name) {
+		this.hashTagName = name;
+	}
 
 	public String getHashtagName() {
 		return hashTagName;

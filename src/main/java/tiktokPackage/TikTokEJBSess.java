@@ -40,10 +40,17 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	}
 
 	@Override
-	public Video posterVideo(Compte c, Video video) {
+	public Video posterVideo(Compte c, Video video, Collection<Hashtag> hashtags) {
 		em.persist(video);
 		Compte cdatabase = em.find(Compte.class, c.getId());
 		cdatabase.addVideo(video);
+		// Ajouter les hashtags
+		for (Hashtag hashtag: hashtags) {
+			if (em.find(Hashtag.class, hashtag.getHashtagName()) == null) {
+				em.persist(hashtag);
+			}
+			video.addHashtag(hashtag);
+		}
 		return video;
 	}
 	

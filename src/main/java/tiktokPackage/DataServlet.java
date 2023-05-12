@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -141,7 +142,16 @@ public class DataServlet extends HttpServlet {
 					responseMap.put("message", "LoginID non reconnu");
 				} else {
 					Video video = new Video();
-					video = facade.posterVideo(compte, video);
+					// Récupérer les hashtags sous la forme "&hashtags=Mood,Summer,Vibes"
+					Collection<Hashtag> hashtags = new ArrayList<Hashtag>();
+					String hashtagStrings = request.getParameter("hashtags"); 
+					if (hashtags != null) {
+						for (String hashtagString: hashtagStrings.split(",")) {
+							hashtags.add(new Hashtag(hashtagString));
+						}
+					}
+					
+					video = facade.posterVideo(compte, video, hashtags);
 					String filename = Integer.toString(video.getId());
 					Part filePart = request.getPart("file");
 					if (filePart == null) {

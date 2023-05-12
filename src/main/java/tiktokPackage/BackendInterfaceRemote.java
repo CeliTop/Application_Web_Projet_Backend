@@ -32,7 +32,7 @@ public interface BackendInterfaceRemote {
 	 * @param video the video itself
 	 * @return the new video object created by the database (with extended infos)
 	 */
-	public Video posterVideo(Compte c, Video video);
+	public Video posterVideo(Compte c, Video video, Collection<Hashtag> hashtags);
 	
 	/**
 	 * get a random video object from the database
