@@ -167,6 +167,9 @@ public class DataServlet extends HttpServlet {
 							hashtags.add(new Hashtag(hashtagString));
 						}
 					}
+					// Récupérer la description
+					String desc = request.getParameter("description"); 
+					video.setDescription(desc);
 					video = facade.posterVideo(compte, video, hashtags);
 					String filename = Integer.toString(video.getId());
 					Part filePart = request.getPart("file");
