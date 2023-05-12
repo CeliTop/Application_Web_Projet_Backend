@@ -30,23 +30,61 @@ public class Video  implements Serializable{
 	@Expose
 	Collection<Commentaire> commentaires;
 
+	@Expose
+	private String description;
+	
+	@Expose
+	private String lieu;
+	
+	@Expose
+	private int nbVues;
+	
 	public Video() {}
 	
 	public int getId() {
 		return id;
 	}
+	
 	public Compte getCompteUploader() {
 		return compteUploader;
 	}
+	
 	public void setCompteUploader(Compte compteUploader) {
 		this.compteUploader = compteUploader;
 	}
+	
 	public Collection<Commentaire> getCommentaires() {
 		return commentaires;
 	}
+	
 	public void addCommentaire(Commentaire commentaire) {
 		this.commentaires.add(commentaire);
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getLieu() {
+		return lieu;
+	}
+
+	public void setLieu(String lieu) {
+		this.lieu = lieu;
+	}
+
+	public int getNbVues() {
+		return nbVues;
+	}
+
+	public void setNbVues(int nbVues) {
+		this.nbVues = nbVues;
+	}
+	
 	@Override
 	public String toString() {
 		return "Video [ id: " + id + " ,uploader: " + compteUploader.toString() + " ]";

@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.google.gson.annotations.Expose;
@@ -31,6 +32,9 @@ public class Compte implements Serializable{
 	
 	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
 	private Collection<Video> videos;
+	
+	@ManyToMany
+	private Collection<Video> videosLike;
 	
 	public Compte() {
 		

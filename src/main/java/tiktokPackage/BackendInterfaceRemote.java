@@ -62,4 +62,18 @@ public interface BackendInterfaceRemote {
 	 * @return l'objet commentaire enregistré dans la bdd
 	 */
 	public Commentaire addCommentaire(String commentaireText, int compteID, int videoID);
+	
+	/**
+	 * Ajoute un like à la vidéo.
+	 * @param compteID l'id du compte qui like la vidéo
+	 * @param videoID l'id de la vidéo like
+	 */
+	public void likeVideo(int compteID, int videoID);
+	
+	/**
+	 * Enlève un like à la vidéo.
+	 * @param compteID l'id du compte qui unlike la vidéo
+	 * @param videoID l'id de la vidéo unlike
+	 */
+	public void unlikeVideo(int compteID, int videoID);
 }

@@ -105,7 +105,7 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getAllComptes")) {
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
-		}
+		} 
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);
 	}

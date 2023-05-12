@@ -79,4 +79,16 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		v.addCommentaire(commentaire);
 		return commentaire;
 	}
+
+	@Override
+	public void likeVideo(int compteID, int videoID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unlikeVideo(int compteID, int videoID) {
+		// TODO Auto-generated method stub
+		
+	}
 }
