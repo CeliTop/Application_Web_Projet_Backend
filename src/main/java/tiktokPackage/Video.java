@@ -43,6 +43,9 @@ public class Video  implements Serializable{
 	@Expose
 	private int nbVues;
 	
+	@Expose
+	private int nbLikes;
+	
 	public Video() {}
 	
 	public int getId() {
@@ -51,6 +54,14 @@ public class Video  implements Serializable{
 	
 	public Compte getCompteUploader() {
 		return compteUploader;
+	}
+	
+	public void like() {
+		nbLikes++;
+	}
+	
+	public void unlike() {
+		nbLikes--;
 	}
 	
 	public void setCompteUploader(Compte compteUploader) {

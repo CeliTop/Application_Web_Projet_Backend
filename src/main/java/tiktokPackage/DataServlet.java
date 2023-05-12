@@ -106,7 +106,15 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getAllComptes")) {
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
-		} 
+		} else if (op.equals("likeVideo")) {
+			int videoID = Integer.parseInt(request.getParameter("videoID"));
+			int compteID = Integer.parseInt(request.getParameter("compteID"));
+			facade.likeVideo(compteID, videoID);
+		} else if (op.equals("unlikeVideo")) {
+			int videoID = Integer.parseInt(request.getParameter("videoID"));
+			int compteID = Integer.parseInt(request.getParameter("compteID"));
+			facade.unlikeVideo(compteID, videoID);	
+		}
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);
 	}

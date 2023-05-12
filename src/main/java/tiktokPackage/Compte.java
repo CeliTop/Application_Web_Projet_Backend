@@ -36,6 +36,18 @@ public class Compte implements Serializable{
 	@ManyToMany
 	private Collection<Video> videosLike;
 	
+	public Collection<Video> getVideosLike() {
+		return videosLike;
+	}
+
+	public void setVideosLike(Collection<Video> videosLike) {
+		this.videosLike = videosLike;
+	}
+
+	public void setVideos(Collection<Video> videos) {
+		this.videos = videos;
+	}
+
 	public Compte() {
 		
 	}
@@ -64,6 +76,14 @@ public class Compte implements Serializable{
 	public void addVideo(Video video) {
 		this.videos.add(video);
 		video.setCompteUploader(this);
+	}
+	
+	public void addVideoLike(Video video) {
+		videosLike.add(video);
+	}
+	
+	public void removeVideoLike(Video video) {
+		videosLike.remove(video);
 	}
 
 	public String getPassword() {
