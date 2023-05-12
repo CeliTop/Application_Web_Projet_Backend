@@ -51,15 +51,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 			req.setParameter(1, hashtag.getHashtagName());
 			List<Hashtag> results = req.getResultList();
 			if (results.size()==0) {	
-				System.out.println("opt1");
-				//System.out.println(hashtag.getVideos().toString());
-				System.out.println("opt1.1");
 				em.persist(hashtag);
-				video = em.find(Video.class, video.getId());
-				System.out.println(video.toString());
 				video.addHashtag(hashtag);
 			} else {
-				System.out.println("opt2");
 				Hashtag bddHash = results.get(0);
 				video.addHashtag(bddHash);
 			}

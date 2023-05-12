@@ -2,7 +2,9 @@ package tiktokPackage;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,9 +38,9 @@ public class Video  implements Serializable{
 	@Expose
 	Collection<Commentaire> commentaires;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@Expose
-	Collection<Hashtag> hashtags;
+	Set<Hashtag> hashtags = new HashSet<Hashtag>();
 
 
 	@Expose
@@ -117,11 +119,6 @@ public class Video  implements Serializable{
 	}
 	
 	public void addHashtag(Hashtag hashtag) {
-		System.out.println("vid1");
-		if (hashtags==null) {
-			System.out.println("hashtag vide");
-		}
 		this.hashtags.add(hashtag);
-		System.out.println("vid2");
 	}
 }

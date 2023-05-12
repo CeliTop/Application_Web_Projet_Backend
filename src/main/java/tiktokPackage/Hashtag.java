@@ -2,9 +2,11 @@ package tiktokPackage;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,8 +26,8 @@ public class Hashtag implements Serializable{
 	@Column(unique=true)
 	private String hashTagName;
 	
-	@ManyToMany(mappedBy = "hashtags")
-	Collection<Video> videos;
+	@ManyToMany(mappedBy = "hashtags", fetch = FetchType.LAZY)
+	Set<Video> videos;
 
 	public Hashtag() {}
 	
