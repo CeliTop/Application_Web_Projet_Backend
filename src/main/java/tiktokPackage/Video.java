@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -29,6 +30,9 @@ public class Video  implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER)
 	@Expose
 	Collection<Commentaire> commentaires;
+	
+	@ManyToMany(mappedBy = "hashtags")
+	private Collection<Hashtag> hashtags;
 
 	@Expose
 	private String description;
@@ -88,5 +92,13 @@ public class Video  implements Serializable{
 	@Override
 	public String toString() {
 		return "Video [ id: " + id + " ,uploader: " + compteUploader.toString() + " ]";
+	}
+	
+	public Collection<Hashtag> gethashtags() {
+		return hashtags;
+	}
+	
+	public void addHashtag(Hashtag hashtag) {
+		hashtags.add(hashtag);
 	}
 }
