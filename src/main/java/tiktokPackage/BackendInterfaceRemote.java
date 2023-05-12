@@ -76,4 +76,11 @@ public interface BackendInterfaceRemote {
 	 * @param videoID l'id de la vidéo unlike
 	 */
 	public void unlikeVideo(int compteID, int videoID);
+	
+	/**
+	 * Find all the videos ID's corresponding to a hashtag
+	 * @param hashtag
+	 * @return
+	 */
+	public Collection<Integer> getHashtagVideos(String hashtag);
 }

@@ -3,6 +3,7 @@ package tiktokPackage;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
@@ -87,9 +88,7 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		if (c==null || v==null) {return null;}
 		Commentaire commentaire = new Commentaire(commentaireText, c, 0, new Date());
 		em.persist(commentaire);
-		System.out.println("========================================");
 		v.addCommentaire(commentaire);
-		System.out.println("22222222222222222222222222222222222222222222222222");
 		return commentaire;
 	}
 
@@ -115,5 +114,12 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		}
 		em.merge(v);
 		em.merge(c);
+	}
+	
+	@Override
+	public Collection<Integer> getHashtagVideos(String hashtag){
+		Hashtag hash = em.find(Hashtag.class, hashtag);
+		if (hash==null) {return null;}
+		return hash.getVideos().stream().map(v -> v.getId()).collect(Collectors.toList());
 	}
 }

@@ -30,6 +30,7 @@ public interface BackendInterfaceLocal {
 	 * Post a video to the database
 	 * @param c the account to which the video will be linked
 	 * @param video the video itself
+	 * @param hashtags the list of hashtags of the video
 	 * @return the new video object created by the database (with extended infos)
 	 */
 	public Video posterVideo(Compte c, Video video, Collection<Hashtag> hashtags);
@@ -58,7 +59,7 @@ public interface BackendInterfaceLocal {
 	 * Ajouter un commentaire de la part du compte c sur la video v
 	 * @param commentaireText le texte du commentaire
 	 * @param compteID l'id du compte qui upload le commentaire
-	 * @param v la video qui est commenté
+	 * @param videoID la video qui est commentée
 	 * @return l'objet commentaire enregistré dans la bdd
 	 */
 	public Commentaire addCommentaire(String commentaireText, int compteID, int videoID);
@@ -76,4 +77,11 @@ public interface BackendInterfaceLocal {
 	 * @param videoID l'id de la vidéo unlike
 	 */
 	public void unlikeVideo(int compteID, int videoID);
+	
+	/**
+	 * Find all the videos ID's corresponding to a hashtag
+	 * @param hashtag
+	 * @return
+	 */
+	public Collection<Integer> getHashtagVideos(String hashtag);
 }

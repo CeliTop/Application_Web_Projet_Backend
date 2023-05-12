@@ -73,6 +73,15 @@ public class DataServlet extends HttpServlet {
 				return;
 			}
 			responseMap.put("message", video);
+		} else if (op.equals("getHashtagVideos")) {
+			String hashtag = request.getParameter("hashtag");
+			if (hashtag == null) {
+				responseMap.put("message", "Parametre manquant");
+				response.setStatus(400);
+			} else {
+				Collection<Integer> videos = facade.getHashtagVideos(hashtag);
+				responseMap.put("videos", videos);
+			}
 		} else if (op.equals("getVideo")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
