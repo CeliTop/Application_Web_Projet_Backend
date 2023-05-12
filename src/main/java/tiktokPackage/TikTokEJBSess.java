@@ -90,7 +90,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		if (c==null || v==null) {return null;}
 		Commentaire commentaire = new Commentaire(commentaireText, c, 0, new Date());
 		em.persist(commentaire);
+		System.out.println("========================================");
 		v.addCommentaire(commentaire);
+		System.out.println("22222222222222222222222222222222222222222222222222");
 		return commentaire;
 	}
 

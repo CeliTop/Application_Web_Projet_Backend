@@ -36,7 +36,7 @@ public class Video  implements Serializable{
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@Expose
-	Collection<Commentaire> commentaires;
+	Set<Commentaire> commentaires;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Expose
