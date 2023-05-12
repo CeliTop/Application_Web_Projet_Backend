@@ -17,12 +17,12 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	private EntityManager em;
 	
 	@Override
-	public boolean addCompte(Compte c) {
+	public int addCompte(Compte c) {
 		try {	
 			em.persist(c);
-			return true;
+			return c.getId();
 		} catch (PersistenceException e) {
-			return false;
+			return 0;
 		}
 	}
 	

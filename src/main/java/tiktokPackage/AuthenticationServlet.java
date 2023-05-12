@@ -97,9 +97,11 @@ public class AuthenticationServlet extends HttpServlet {
 				responseMap.put("message", "Parametre manquant");
 				response.setStatus(400);
 			} else {
-				boolean correct = facade.addCompte(new Compte(name, password));
-				if (correct) {
+				int compteID = facade.addCompte(new Compte(name, password));
+				if (compteID>0) {
 					responseMap.put("message", name + " ajouté");
+					response.setHeader("Set-Cookie",
+							String.format("loginID=%d; SameSite=None; Secure", compteID));
 				} else {
 					responseMap.put("message", "Le nom " + name + " est déja utilisé");
 					response.setStatus(422);

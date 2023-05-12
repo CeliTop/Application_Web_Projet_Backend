@@ -11,7 +11,7 @@ public interface BackendInterfaceLocal {
 	 * @param c the account that need to be added to the database
 	 * @return true if the account is added to the database, false if an error occured
 	 */
-	public boolean addCompte(Compte c);
+	public int addCompte(Compte c);
 	
 	/**
 	 * Get an account from it's id
