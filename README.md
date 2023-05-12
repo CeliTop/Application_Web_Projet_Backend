@@ -8,6 +8,8 @@ Packages (et leur version utilisées pendant le développemenet):
 - EAP 7.4.0
 - GSON 2.10.1
 
+## Documentation de l'API
+On a utilisé Postman pour tester l'API et créer la [documentation](https://documenter.getpostman.com/view/22501258/2s93XyT35u).
 
 ## Front-Back séparés
 Pour lancer le serveur back et y accéder avec une adresse différente de 127.0.0.1 (backend et frontend séparés par exemple):
