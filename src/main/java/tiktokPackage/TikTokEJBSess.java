@@ -82,13 +82,25 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 
 	@Override
 	public void likeVideo(int compteID, int videoID) {
-		// TODO Auto-generated method stub
-		
+		Compte c = getCompte(compteID);
+		Video v = getVideoFromID(videoID);
+		if (!c.getVideosLike().contains(c)) {
+			v.like();
+			c.addVideoLike(v);
+		}
+		em.merge(v);
+		em.merge(c);
 	}
 
 	@Override
 	public void unlikeVideo(int compteID, int videoID) {
-		// TODO Auto-generated method stub
-		
+		Compte c = getCompte(compteID);
+		Video v = getVideoFromID(videoID);
+		if (c.getVideosLike().contains(c)) {
+			v.unlike();
+			c.removeVideoLike(v);
+		}
+		em.merge(v);
+		em.merge(c);
 	}
 }
