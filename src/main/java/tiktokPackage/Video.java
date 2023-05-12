@@ -2,15 +2,20 @@ package tiktokPackage;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+
 
 import com.google.gson.annotations.Expose;
 
@@ -31,8 +36,10 @@ public class Video  implements Serializable{
 	@Expose
 	Collection<Commentaire> commentaires;
 	
-	@ManyToMany(mappedBy = "hashtags")
-	private Collection<Hashtag> hashtags;
+	@ManyToMany
+	@Expose
+	Collection<Hashtag> hashtags;
+
 
 	@Expose
 	private String description;
@@ -110,6 +117,11 @@ public class Video  implements Serializable{
 	}
 	
 	public void addHashtag(Hashtag hashtag) {
-		hashtags.add(hashtag);
+		System.out.println("vid1");
+		if (hashtags==null) {
+			System.out.println("hashtag vide");
+		}
+		this.hashtags.add(hashtag);
+		System.out.println("vid2");
 	}
 }

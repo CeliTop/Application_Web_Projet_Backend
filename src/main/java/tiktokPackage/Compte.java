@@ -73,10 +73,11 @@ public class Compte implements Serializable{
 		return videos;
 	}
 
+	/*
 	public void addVideo(Video video) {
 		this.videos.add(video);
 		video.setCompteUploader(this);
-	}
+	} */
 	
 	public void addVideoLike(Video video) {
 		videosLike.add(video);

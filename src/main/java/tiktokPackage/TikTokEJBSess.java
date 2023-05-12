@@ -43,13 +43,26 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	public Video posterVideo(Compte c, Video video, Collection<Hashtag> hashtags) {
 		em.persist(video);
 		Compte cdatabase = em.find(Compte.class, c.getId());
-		cdatabase.addVideo(video);
+		video.setCompteUploader(cdatabase);
 		// Ajouter les hashtags
 		for (Hashtag hashtag: hashtags) {
-			if (em.find(Hashtag.class, hashtag.getHashtagName()) == null) {
+			System.out.println("hashtags pas VIDE");
+			TypedQuery<Hashtag> req = em.createQuery("SELECT h FROM Hashtag h WHERE hashTagName=?1",Hashtag.class).setMaxResults(1);
+			req.setParameter(1, hashtag.getHashtagName());
+			List<Hashtag> results = req.getResultList();
+			if (results.size()==0) {	
+				System.out.println("opt1");
+				//System.out.println(hashtag.getVideos().toString());
+				System.out.println("opt1.1");
 				em.persist(hashtag);
+				video = em.find(Video.class, video.getId());
+				System.out.println(video.toString());
+				video.addHashtag(hashtag);
+			} else {
+				System.out.println("opt2");
+				Hashtag bddHash = results.get(0);
+				video.addHashtag(bddHash);
 			}
-			video.addHashtag(hashtag);
 		}
 		return video;
 	}

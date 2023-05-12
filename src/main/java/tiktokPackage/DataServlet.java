@@ -153,12 +153,11 @@ public class DataServlet extends HttpServlet {
 					// Récupérer les hashtags sous la forme "&hashtags=Mood,Summer,Vibes"
 					Collection<Hashtag> hashtags = new ArrayList<Hashtag>();
 					String hashtagStrings = request.getParameter("hashtags"); 
-					if (hashtags != null) {
+					if (hashtagStrings != null) {
 						for (String hashtagString: hashtagStrings.split(",")) {
 							hashtags.add(new Hashtag(hashtagString));
 						}
 					}
-					
 					video = facade.posterVideo(compte, video, hashtags);
 					String filename = Integer.toString(video.getId());
 					Part filePart = request.getPart("file");
