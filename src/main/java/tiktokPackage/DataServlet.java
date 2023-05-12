@@ -118,12 +118,36 @@ public class DataServlet extends HttpServlet {
 			responseMap.put("comptes", comptes);
 		} else if (op.equals("likeVideo")) {
 			int videoID = Integer.parseInt(request.getParameter("videoID"));
-			int compteID = Integer.parseInt(request.getParameter("compteID"));
-			facade.likeVideo(compteID, videoID);
+			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+			if (LoginIDCookie == null) {
+				response.setStatus(403);
+				responseMap.put("message", "L'utilisateur n'est pas connecté");
+			} else {
+				String id = LoginIDCookie.getValue();
+				Compte compte = facade.getCompte(Integer.parseInt(id));
+				if (compte == null) {
+					response.setStatus(403);
+					responseMap.put("message", "LoginID non reconnu");
+				} else {
+					facade.likeVideo(compte.getId(), videoID);
+				}
+			}
 		} else if (op.equals("unlikeVideo")) {
 			int videoID = Integer.parseInt(request.getParameter("videoID"));
-			int compteID = Integer.parseInt(request.getParameter("compteID"));
-			facade.unlikeVideo(compteID, videoID);	
+			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+			if (LoginIDCookie == null) {
+				response.setStatus(403);
+				responseMap.put("message", "L'utilisateur n'est pas connecté");
+			} else {
+				String id = LoginIDCookie.getValue();
+				Compte compte = facade.getCompte(Integer.parseInt(id));
+				if (compte == null) {
+					response.setStatus(403);
+					responseMap.put("message", "LoginID non reconnu");
+				} else {
+					facade.unlikeVideo(compte.getId(), videoID);
+				}
+			}
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);

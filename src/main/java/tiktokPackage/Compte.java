@@ -40,14 +40,6 @@ public class Compte implements Serializable{
 		return videosLike;
 	}
 
-	public void setVideosLike(Collection<Video> videosLike) {
-		this.videosLike = videosLike;
-	}
-
-	public void setVideos(Collection<Video> videos) {
-		this.videos = videos;
-	}
-
 	public Compte() {
 		
 	}
