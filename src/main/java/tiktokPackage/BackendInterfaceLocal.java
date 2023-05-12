@@ -79,6 +79,12 @@ public interface BackendInterfaceLocal {
 	public void unlikeVideo(int compteID, int videoID);
 	
 	/**
+	 * Ajoute une vue à la vidéo
+	 * @param vue la video vue
+	 */
+	public void addVue(Video vue);
+	
+	/**
 	 * Find all the videos ID's corresponding to a hashtag
 	 * @param hashtag
 	 * @return

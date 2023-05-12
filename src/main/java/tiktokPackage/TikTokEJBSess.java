@@ -116,6 +116,14 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		em.merge(c);
 	}
 	
+	public void addVue(Video vue) {
+		System.out.println("=====================");
+		vue.setNbVues(vue.getNbVues()+1);
+		System.out.println("=====================");
+		em.merge(vue);
+		System.out.println("=====================");
+	}
+	
 	@Override
 	public Collection<Integer> getHashtagVideos(String hashtag){
 		Hashtag hash = em.find(Hashtag.class, hashtag);

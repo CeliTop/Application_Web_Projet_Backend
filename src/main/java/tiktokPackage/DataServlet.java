@@ -85,6 +85,7 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getVideo")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
+			facade.addVue(video);
 			if (video == null) {
 				response.getWriter().println("La vidéo n'a pas été trouvé");
 				return;
