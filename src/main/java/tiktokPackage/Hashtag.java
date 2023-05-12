@@ -18,10 +18,11 @@ import com.google.gson.annotations.Expose;
 @SuppressWarnings("serial")
 public class Hashtag implements Serializable{
 	
-	@Id
+	/*@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private int id;*/
 	
+	@Id
 	@Expose
 	@Column(unique=true)
 	private String hashTagName;
