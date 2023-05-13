@@ -20,15 +20,25 @@ public class ServletUtils {
 	}
 	
 	static Cookie getLoginIDCookie(Cookie[] cookies) {
-		Cookie LoginIDCookie = null;
+		Cookie loginIDCookie = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("loginID")) {
-					LoginIDCookie = cookie;
+					loginIDCookie = cookie;
 					break;
 				}
 			}
 		}
-		return LoginIDCookie;
+		return loginIDCookie;
+	}
+	
+	static Compte getCompteFromCookie(Cookie loginCookie, BackendInterfaceLocal facade) {
+		if (loginCookie == null) {return null;}
+		else {
+			String id = loginCookie.getValue();
+			Compte compte = facade.getCompte(Integer.parseInt(id));
+			if (compte == null) {return null;}
+			return compte;
+		}
 	}
 }

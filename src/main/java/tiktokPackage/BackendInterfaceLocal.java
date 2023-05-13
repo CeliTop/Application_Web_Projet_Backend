@@ -79,6 +79,14 @@ public interface BackendInterfaceLocal {
 	public void unlikeVideo(int compteID, int videoID);
 	
 	/**
+	 * Does an account has liked the video
+	 * @param compteID
+	 * @param videoID
+	 * @return
+	 */
+	public boolean liked(int compteID, int videoID);
+	
+	/**
 	 * Ajoute une vue à la vidéo
 	 * @param vue la video vue
 	 */

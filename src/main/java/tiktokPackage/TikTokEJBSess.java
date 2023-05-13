@@ -116,6 +116,13 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		em.merge(c);
 	}
 	
+	public boolean liked(int compteID, int videoID) {
+		Compte c = getCompte(compteID);
+		Video v = getVideoFromID(videoID);
+		if (c.getVideosLike().contains(v)) {return true;}
+		return false;
+	}
+	
 	public void addVue(Video vue) {
 		vue.setNbVues(vue.getNbVues()+1);
 		em.merge(vue);

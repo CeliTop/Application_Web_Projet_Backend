@@ -57,6 +57,10 @@ public class DataServlet extends HttpServlet {
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
 		HashMap<String, Object> responseMap = new HashMap<String, Object>();
+		
+		// Obtenir le compte si l'utilisateur est connecté
+		Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+		Compte compte = ServletUtils.getCompteFromCookie(LoginIDCookie, facade);
 
 		String op = request.getParameter("op");
 		if (op == null) {
@@ -65,6 +69,10 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getRandomVideo")) {
 			Video video = facade.getRandomVIdeo();
 			responseMap.put("video", video);
+			if (compte!=null) {
+				boolean liked = facade.liked(compte.getId(), video.getId());
+				responseMap.put("liked", liked);
+			}
 		} else if (op.equals("getVideoInfos")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
@@ -73,6 +81,10 @@ public class DataServlet extends HttpServlet {
 				return;
 			}
 			responseMap.put("message", video);
+			if (compte!=null) {
+				boolean liked = facade.liked(compte.getId(), video.getId());
+				responseMap.put("liked", liked);
+			}
 		} else if (op.equals("getHashtagVideos")) {
 			String hashtag = request.getParameter("hashtag");
 			if (hashtag == null) {
@@ -117,36 +129,20 @@ public class DataServlet extends HttpServlet {
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
 		} else if (op.equals("likeVideo")) {
-			int videoID = Integer.parseInt(request.getParameter("videoID"));
-			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
-			if (LoginIDCookie == null) {
+			if (compte == null) {
 				response.setStatus(403);
-				responseMap.put("message", "L'utilisateur n'est pas connecté");
+				responseMap.put("message", "Utilisateur non connecté");
 			} else {
-				String id = LoginIDCookie.getValue();
-				Compte compte = facade.getCompte(Integer.parseInt(id));
-				if (compte == null) {
-					response.setStatus(403);
-					responseMap.put("message", "LoginID non reconnu");
-				} else {
-					facade.likeVideo(compte.getId(), videoID);
-				}
+				int videoID = Integer.parseInt(request.getParameter("videoID"));
+				facade.likeVideo(compte.getId(), videoID);
 			}
 		} else if (op.equals("unlikeVideo")) {
-			int videoID = Integer.parseInt(request.getParameter("videoID"));
-			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
-			if (LoginIDCookie == null) {
+			if (compte == null) {
 				response.setStatus(403);
-				responseMap.put("message", "L'utilisateur n'est pas connecté");
+				responseMap.put("message", "Utilisateur non connecté");
 			} else {
-				String id = LoginIDCookie.getValue();
-				Compte compte = facade.getCompte(Integer.parseInt(id));
-				if (compte == null) {
-					response.setStatus(403);
-					responseMap.put("message", "LoginID non reconnu");
-				} else {
-					facade.unlikeVideo(compte.getId(), videoID);
-				}
+				int videoID = Integer.parseInt(request.getParameter("videoID"));
+				facade.unlikeVideo(compte.getId(), videoID);
 			}
 		}
 		String responseJson = gson.toJson(responseMap);
@@ -166,53 +162,48 @@ public class DataServlet extends HttpServlet {
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
 		HashMap<String, Object> responseMap = new HashMap<String, Object>();
+		
+		// Obtenir le compte si l'utilisateur est connecté
+		Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+		Compte compte = ServletUtils.getCompteFromCookie(LoginIDCookie, facade);
 
 			if (op == null) {
 			responseMap.put("message", "Parametre manquant");
 			response.setStatus(400);
 		} else if (op.equals("upload")) {
-			// Get the cookie of the request
-			Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
-			if (LoginIDCookie == null) {
+			if (compte == null) {
 				response.setStatus(403);
-				responseMap.put("message", "L'utilisateur n'est pas connecté");
+				responseMap.put("message", "Utilisateur non connecté");
 			} else {
-				String id = LoginIDCookie.getValue();
-				Compte compte = facade.getCompte(Integer.parseInt(id));
-				if (compte == null) {
-					response.setStatus(403);
-					responseMap.put("message", "LoginID non reconnu");
-				} else {
-					Video video = new Video();
-					// Récupérer les hashtags sous la forme "&hashtags=Mood,Summer,Vibes"
-					Collection<Hashtag> hashtags = new ArrayList<Hashtag>();
-					String hashtagStrings = request.getParameter("hashtags"); 
-					if (hashtagStrings != null) {
-						for (String hashtagString: hashtagStrings.split(",")) {
-							hashtags.add(new Hashtag(hashtagString));
-						}
+				Video video = new Video();
+				// Récupérer les hashtags sous la forme "&hashtags=Mood,Summer,Vibes"
+				Collection<Hashtag> hashtags = new ArrayList<Hashtag>();
+				String hashtagStrings = request.getParameter("hashtags"); 
+				if (hashtagStrings != null) {
+					for (String hashtagString: hashtagStrings.split(",")) {
+						hashtags.add(new Hashtag(hashtagString));
 					}
-					// Récupérer la description et localisation
-					String desc = request.getParameter("description"); 
-					video.setDescription(desc);
-					String lieu = request.getParameter("lieu"); 
-					video.setLieu(lieu);
-					video = facade.posterVideo(compte, video, hashtags);
-					String filename = Integer.toString(video.getId());
-					Part filePart = request.getPart("file");
-					if (filePart == null) {
-						response.getWriter().println("Pas de vidéo à uploader");
-						return;
-					}
-					Path parentPath = Paths.get(System.getProperty("jboss.server.data.dir") + "/uploads");
-					if (!Files.exists(parentPath))
-						Files.createDirectories(parentPath);
-					String filePath = parentPath + File.separator + filename;
-					InputStream fileContent = filePart.getInputStream();
-					Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-					responseMap.put("message", video);
-					responseMap.put("details", "fichier ajouté à l'adresse: " + filePath);
 				}
+				// Récupérer la description et localisation
+				String desc = request.getParameter("description"); 
+				video.setDescription(desc);
+				String lieu = request.getParameter("lieu"); 
+				video.setLieu(lieu);
+				video = facade.posterVideo(compte, video, hashtags);
+				String filename = Integer.toString(video.getId());
+				Part filePart = request.getPart("file");
+				if (filePart == null) {
+					response.getWriter().println("Pas de vidéo à uploader");
+					return;
+				}
+				Path parentPath = Paths.get(System.getProperty("jboss.server.data.dir") + "/uploads");
+				if (!Files.exists(parentPath))
+					Files.createDirectories(parentPath);
+				String filePath = parentPath + File.separator + filename;
+				InputStream fileContent = filePart.getInputStream();
+				Files.copy(fileContent, Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+				responseMap.put("message", video);
+				responseMap.put("details", "fichier ajouté à l'adresse: " + filePath);
 			}
 		} else if (op.equals("addCommentaire")) {
 			String text = request.getParameter("text");
@@ -221,24 +212,16 @@ public class DataServlet extends HttpServlet {
 				responseMap.put("message", "Parametre manquant");
 				response.setStatus(400);
 			} else {
-				Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
-				if (LoginIDCookie == null) {
+				if (compte == null) {
 					response.setStatus(403);
-					responseMap.put("message", "L'utilisateur n'est pas connecté");
+					responseMap.put("message", "Utilisateur non connecté");
 				} else {
-					String id = LoginIDCookie.getValue();
-					Compte compte = facade.getCompte(Integer.parseInt(id));
-					if (compte == null) {
-						response.setStatus(403);
-						responseMap.put("message", "LoginID non reconnu");
+					Commentaire commentaire = facade.addCommentaire(text, compte.getId(), Integer.parseInt(videoID));
+					if (commentaire == null) {
+						response.setStatus(400);
+						responseMap.put("message", "Le commentaire n'as pas été uploadé");
 					} else {
-						Commentaire commentaire = facade.addCommentaire(text, compte.getId(), Integer.parseInt(videoID));
-						if (commentaire == null) {
-							response.setStatus(400);
-							responseMap.put("message", "Le commentaire n'as pas été uploadé");
-						} else {
-							responseMap.put("message", commentaire);
-						}
+						responseMap.put("message", commentaire);
 					}
 				}
 			} 
