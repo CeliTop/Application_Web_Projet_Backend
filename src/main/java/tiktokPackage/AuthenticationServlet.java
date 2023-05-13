@@ -1,6 +1,7 @@
 package tiktokPackage;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.ejb.EJB;
@@ -92,12 +93,15 @@ public class AuthenticationServlet extends HttpServlet {
 		} else if (op.equals("createCompte")) {
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
+			String bio = request.getParameter("bio");
+			String surnom = request.getParameter("surnom");
+			Date currentDate = new Date();
 			// Robustesse
 			if (name == null || password == null) {
 				responseMap.put("message", "Parametre manquant");
 				response.setStatus(400);
 			} else {
-				int compteID = facade.addCompte(new Compte(name, password));
+				int compteID = facade.addCompte(new Compte(name, password, bio, currentDate, surnom));
 				if (compteID>0) {
 					responseMap.put("message", name + " ajouté");
 					response.setHeader("Set-Cookie",

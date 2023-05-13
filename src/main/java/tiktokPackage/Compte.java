@@ -2,6 +2,7 @@ package tiktokPackage;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +31,16 @@ public class Compte implements Serializable{
 	
 	private String password;
 	
+	@Expose
+	private String bio;
+	
+	@Expose
+	private Date registerDate;
+	
+	@Expose
+	private String surnom;
+	
+	
 	@OneToMany(mappedBy="compteUploader", cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
 	private Collection<Video> videos;
 	
@@ -47,6 +58,14 @@ public class Compte implements Serializable{
 	public Compte(String nom, String password) {
 		this.nom = nom;
 		this.password = password;
+	}
+	
+	public Compte(String nom, String password, String bio, Date registerDate, String surnom) {
+		this.nom = nom;
+		this.password = password;
+		this.bio = bio;
+		this.registerDate = registerDate;
+		this.surnom = surnom;
 	}
 	
 	public int getId() {
