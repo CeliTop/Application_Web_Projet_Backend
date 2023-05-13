@@ -69,10 +69,11 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getRandomVideo")) {
 			Video video = facade.getRandomVIdeo();
 			responseMap.put("video", video);
+			boolean liked = false;
 			if (compte!=null) {
-				boolean liked = facade.liked(compte.getId(), video.getId());
-				responseMap.put("liked", liked);
+				liked = facade.liked(compte.getId(), video.getId());
 			}
+			responseMap.put("liked", liked);
 		} else if (op.equals("getVideoInfos")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
@@ -81,10 +82,11 @@ public class DataServlet extends HttpServlet {
 				return;
 			}
 			responseMap.put("message", video);
+			boolean liked = false;
 			if (compte!=null) {
-				boolean liked = facade.liked(compte.getId(), video.getId());
-				responseMap.put("liked", liked);
+				liked = facade.liked(compte.getId(), video.getId());
 			}
+			responseMap.put("liked", liked);
 		} else if (op.equals("getHashtagVideos")) {
 			String hashtag = request.getParameter("hashtag");
 			if (hashtag == null) {
