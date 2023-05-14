@@ -99,11 +99,11 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getVideo")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
-			facade.addVue(video);
 			if (video == null) {
 				response.getWriter().println("La vidéo n'a pas été trouvé");
 				return;
 			}
+			facade.addVue(video);
 			String filePath = System.getProperty("jboss.server.data.dir") + File.separator + "uploads" + File.separator
 					+ video.getId();
 			File file = new File(filePath);
@@ -112,7 +112,7 @@ public class DataServlet extends HttpServlet {
 			if (file.exists()) {
 				response.setContentType("video/mp4");
 				response.setContentLength((int) file.length());
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + video.getId() + "\"");
+				response.setHeader("Content-Disposition", "inline; filename=\"" + video.getId() + ".mp4\"");
 
 				FileInputStream inputStream = new FileInputStream(file);
 				OutputStream outputStream = response.getOutputStream();
