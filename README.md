@@ -36,4 +36,4 @@ En téléchargeant [h2-console](https://developers.redhat.com/quickstarts/eap-ar
 
 ## TODO
 - entity VIDEO: likes, (facade get video par lieu ?)
-- entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes, surnom
+- entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes, surnom, nbAbonnés, nbVideoUpload
