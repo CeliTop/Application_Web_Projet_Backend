@@ -130,6 +130,15 @@ public class DataServlet extends HttpServlet {
 		} else if (op.equals("getAllComptes")) {
 			Collection<Compte> comptes = facade.getAllComptes();
 			responseMap.put("comptes", comptes);
+		} else if (op.equals("getCompte")) {
+			int compteID = Integer.parseInt(request.getParameter("id"));
+			Compte compteFound = facade.getCompte(compteID);
+			if (compteFound==null) {
+				responseMap.put("message", "Utilisateur non trouvé");
+				response.setStatus(400);
+			} else {
+				responseMap.put("compte", compteFound);
+			}
 		} else if (op.equals("likeVideo")) {
 			if (compte == null) {
 				response.setStatus(403);

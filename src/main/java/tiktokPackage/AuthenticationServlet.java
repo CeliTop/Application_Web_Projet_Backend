@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,9 +55,18 @@ public class AuthenticationServlet extends HttpServlet {
 			String password = request.getParameter("password");
 			// Robustesse
 			if (name == null || password == null) {
-				responseMap.put("message", "Parametre manquant");
-				response.setStatus(400);
+				// Login using cookie and return the account
+				System.out.println(request.getCookies());
+				Cookie LoginIDCookie = ServletUtils.getLoginIDCookie(request.getCookies());
+				Compte compte = ServletUtils.getCompteFromCookie(LoginIDCookie, facade);
+				if (compte==null) {
+					responseMap.put("message", "Parametre manquant ou cookie manquant");
+					response.setStatus(400);
+				} else {
+					responseMap.put("compte", compte);
+				}
 			} else {
+				// Login using password and return the account
 				Compte dbCompte = facade.login(new Compte(name, password));
 				if (dbCompte == null) {
 					responseMap.put("message", "L'utilisateur n'existe pas ou le mot de passe est erroné");
