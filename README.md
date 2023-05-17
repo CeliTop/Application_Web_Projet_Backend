@@ -35,5 +35,5 @@ Il faut probablement adapter le chemin apres `file:`, par exemple `/home/user/EA
 En téléchargeant [h2-console](https://developers.redhat.com/quickstarts/eap-archive/h2-console), puis en extrayant le `.war` situé dans le `zip/h2-console/` et en le déployant dans le dossier `standalone/deployments`, il est possible d'acceder directement à la bdd en utilisant le login et mdp par défaut `SA` et le bon jdbc url utilisé dans le datasource sur le lien `http://localhost:8080/h2-console/`.
 
 ## TODO
-- entity VIDEO: (facade get video par lieu ?), savoir si l'utilisateur qui recoit la vidéo est abonné au compte de celui qui upload
+- entity VIDEO: facade get_video_lieu, facade get_video_hashtags, savoir si l'utilisateur qui recoit la vidéo est abonné au compte de celui qui upload
 - entity Compte: pdp (entier avatar), abonnés, abonnements, nbAbonnés, nbVideoUpload
