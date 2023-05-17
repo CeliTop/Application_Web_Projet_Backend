@@ -36,4 +36,4 @@ En téléchargeant [h2-console](https://developers.redhat.com/quickstarts/eap-ar
 
 ## TODO
 - entity VIDEO: (facade get video par lieu ?), savoir si l'utilisateur qui recoit la vidéo est abonné au compte de celui qui upload
-- entity Compte: bio, pdp, depuis quand il a rejoint, abonnés, abonnements, videosVues, videosLikes, surnom, nbAbonnés, nbVideoUpload
+- entity Compte: pdp (entier avatar), abonnés, abonnements, nbAbonnés, nbVideoUpload
