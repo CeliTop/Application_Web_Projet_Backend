@@ -47,6 +47,14 @@ public class Compte implements Serializable{
 	@ManyToMany
 	private Collection<Video> videosLike;
 	
+	@ManyToMany(mappedBy="abonnements")
+	private Collection<Compte> abonnes;
+	
+	@ManyToMany
+	private Collection<Compte> abonnements;
+	
+	
+	
 	public Collection<Video> getVideosLike() {
 		return videosLike;
 	}
@@ -105,6 +113,22 @@ public class Compte implements Serializable{
 	@Override
 	public String toString() {
 		return "Compte [ id: " + id + " ,nom: " + nom + " ]";
+	}
+	
+	public void addAbonnement(Compte c) {
+		abonnements.add(c);
+	}
+	
+	public void removeAbonnement(Compte c) {
+		abonnements.remove(c);
+	}
+	
+	public Collection<Compte> getAbonnes() {
+		return abonnes;
+	}
+	
+	public Collection<Compte> getAbonnement() {
+		return abonnements;
 	}
 	
 }

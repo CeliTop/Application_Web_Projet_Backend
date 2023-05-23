@@ -78,6 +78,9 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		if (comptes.size() == 0) return null;
 		Compte dbCompte = comptes.get(0);
 		if (dbCompte == null || !(dbCompte.getPassword().equals(c.getPassword()))) return null;
+		System.out.println("=========");
+		System.out.println(dbCompte.getAbonnes());
+		System.out.println(dbCompte.getAbonnement());
 		return dbCompte;
 	}
 	
@@ -133,5 +136,23 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		Hashtag hash = em.find(Hashtag.class, hashtag);
 		if (hash==null) {return null;}
 		return hash.getVideos().stream().map(v -> v.getId()).collect(Collectors.toList());
+	}
+	
+	@Override
+	public boolean addAbonnement(int compteID, int abonnementID) {
+		Compte compte = getCompte(compteID);
+		Compte abonnement = getCompte(abonnementID);
+		if (compte == null || abonnement == null || compte.getAbonnement().contains(abonnement)) return false;
+		compte.addAbonnement(abonnement);
+		return true;
+	}
+	
+	@Override
+	public boolean removeAbonnement(int compteID, int abonnementID) {
+		Compte compte = getCompte(compteID);
+		Compte abonnement = getCompte(abonnementID);
+		if (compte == null || abonnement == null || !compte.getAbonnement().contains(abonnement)) return false;
+		compte.removeAbonnement(abonnement);
+		return true;
 	}
 }

@@ -98,4 +98,20 @@ public interface BackendInterfaceLocal {
 	 * @return
 	 */
 	public Collection<Integer> getHashtagVideos(String hashtag);
+	
+	/**
+	 * Ajoute un abonnement
+	 * @param compteID le compte qui s'abonne
+	 * @param abonnementID le compte qui va gagner un abonné
+	 * @return true si l'ajout est correct
+	 */
+	public boolean addAbonnement(int compteID, int abonnementID);
+	
+	/**
+	 * Enleve un abonnement
+	 * @param compteID le compte qui se desabonne
+	 * @param abonnementID le compte qui va perdre un abonné
+	 * @return true si le desabonnement est correct
+	 */
+	public boolean removeAbonnement(int compteID, int abonnementID);
 }

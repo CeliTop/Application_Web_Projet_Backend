@@ -236,6 +236,20 @@ public class DataServlet extends HttpServlet {
 					}
 				}
 			} 
+		} else if (op.equals("addAbonnement")) {
+			String abonnementID = request.getParameter("abonnementID");
+			if (facade.addAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
+				responseMap.put("message", "Abonnement ajouté !");
+			} else {
+				responseMap.put("message", "Problème lors de l'abonnement");
+			}
+		} else if (op.equals("removeAbonnement")) {
+			String abonnementID = request.getParameter("abonnementID");
+			if (facade.removeAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
+				responseMap.put("message", "Abonnement enlevé !");
+			} else {
+				responseMap.put("message", "Problème lors du désabonnement");
+			}
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);
