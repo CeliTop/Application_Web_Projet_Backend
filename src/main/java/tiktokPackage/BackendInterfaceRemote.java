@@ -129,5 +129,23 @@ public interface BackendInterfaceRemote {
 	 */
 	public boolean estAbonne(int compteID, int abonnementID);
 	
+	/**
+	 * Get all the videos corresponding to place
+	 * @param lieu
+	 * @return
+	 */
 	public Collection<Video> getVideoFromLieu(String lieu);
+	
+	/**
+	 * Get all the account's subscription
+	 * @param CompteId
+	 * @return
+	 */
+	public Collection<Compte> getAbonnements(int CompteId);
+	
+	/**
+	 * Get every Hashtags of the database
+	 * @return
+	 */
+	public Collection<String> getHashtags();
 }

@@ -206,4 +206,16 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		}
 		return videos;
 	}
+	
+	@Override
+	public Collection<Compte> getAbonnements(int compteId) {
+		Compte compte = em.find(Compte.class, compteId);
+		if (compte == null) return null;
+		return new LinkedList<Compte>(compte.getAbonnement());
+	}
+	
+	@Override
+	public Collection<String> getHashtags() {
+		return em.createQuery("SELECT h FROM Hashtag h",Hashtag.class).getResultList().stream().map(hashtag -> hashtag.getHashtagName()).collect(Collectors.toList());
+	}
 }

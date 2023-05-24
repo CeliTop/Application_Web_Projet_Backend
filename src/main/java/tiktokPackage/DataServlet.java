@@ -130,6 +130,16 @@ public class DataServlet extends HttpServlet {
 				}
 				responseMap.put("videos", videos);
 			}
+		} else if (op.equals("getAbonnements")) {
+			if (compte == null) {
+				responseMap.put("message", "Pas connecté");
+			} else {
+				Collection<Compte> abonnements = facade.getAbonnements(compte.getId());
+				responseMap.put("abonnements", abonnements);
+			}
+		} else if (op.equals("getAllHashtags")) {
+			Collection<String> hashtags = facade.getHashtags();
+			responseMap.put("hashtags", hashtags);
 		} else if (op.equals("getVideo")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
@@ -280,17 +290,25 @@ public class DataServlet extends HttpServlet {
 			} 
 		} else if (op.equals("addAbonnement")) {
 			String abonnementID = request.getParameter("abonnementID");
-			if (facade.addAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
-				responseMap.put("message", "Abonnement ajouté !");
-			} else {
-				responseMap.put("message", "Problème lors de l'abonnement");
+			if (compte==null) {
+				responseMap.put("message", "Pas connecté");
+			} else {	
+				if (facade.addAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
+					responseMap.put("message", "Abonnement ajouté !");
+				} else {
+					responseMap.put("message", "Problème lors de l'abonnement");
+				}
 			}
 		} else if (op.equals("removeAbonnement")) {
 			String abonnementID = request.getParameter("abonnementID");
-			if (facade.removeAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
-				responseMap.put("message", "Abonnement enlevé !");
+			if (compte==null) {
+				responseMap.put("message", "Pas connecté");
 			} else {
-				responseMap.put("message", "Problème lors du désabonnement");
+				if (facade.removeAbonnement(compte.getId(), Integer.parseInt(abonnementID))) {
+					responseMap.put("message", "Abonnement enlevé !");
+				} else {
+					responseMap.put("message", "Problème lors du désabonnement");
+				}
 			}
 		}
 		String responseJson = gson.toJson(responseMap);
