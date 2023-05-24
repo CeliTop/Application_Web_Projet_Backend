@@ -27,6 +27,13 @@ public interface BackendInterfaceLocal {
 	public Collection<Compte> getAllComptes();
 	
 	/**
+	 * Get all the videos of an account
+	 * @param compteId the account ID
+	 * @return all the videos ID of the account
+	 */
+	public Collection<Video> getVideosFromCompte(int compteId);
+	
+	/**
 	 * Post a video to the database
 	 * @param c the account to which the video will be linked
 	 * @param video the video itself
@@ -93,11 +100,11 @@ public interface BackendInterfaceLocal {
 	public void addVue(Video vue);
 	
 	/**
-	 * Find all the videos ID's corresponding to a hashtag
+	 * Find all the videos corresponding to a hashtag
 	 * @param hashtag
 	 * @return
 	 */
-	public Collection<Integer> getHashtagVideos(String hashtag);
+	public Collection<Video> getHashtagVideos(String hashtag);
 	
 	/**
 	 * Ajoute un abonnement
@@ -114,4 +121,14 @@ public interface BackendInterfaceLocal {
 	 * @return true si le desabonnement est correct
 	 */
 	public boolean removeAbonnement(int compteID, int abonnementID);
+	
+	/**
+	 * Savoir si on est abonné à un compte
+	 * @param compteID
+	 * @param abonnementID
+	 * @return
+	 */
+	public boolean estAbonne(int compteID, int abonnementID);
+	
+	public Collection<Video> getVideoFromLieu(String lieu);
 }

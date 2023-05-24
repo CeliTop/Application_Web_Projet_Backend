@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -52,6 +53,10 @@ public class Compte implements Serializable{
 	
 	@ManyToMany
 	private Collection<Compte> abonnements;
+	
+	@Expose
+	@Transient
+	private boolean abonne;
 	
 	
 	
@@ -129,6 +134,14 @@ public class Compte implements Serializable{
 	
 	public Collection<Compte> getAbonnement() {
 		return abonnements;
+	}
+
+	public boolean isAbonne() {
+		return abonne;
+	}
+
+	public void setAbonne(boolean abonne) {
+		this.abonne = abonne;
 	}
 	
 }

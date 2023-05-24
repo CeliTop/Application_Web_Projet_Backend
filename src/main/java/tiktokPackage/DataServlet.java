@@ -68,12 +68,11 @@ public class DataServlet extends HttpServlet {
 			response.setStatus(400);
 		} else if (op.equals("getRandomVideo")) {
 			Video video = facade.getRandomVIdeo();
-			responseMap.put("video", video);
-			boolean liked = false;
 			if (compte!=null) {
-				liked = facade.liked(compte.getId(), video.getId());
+				video.setLiked(facade.liked(compte.getId(), video.getId()));
+				video.getCompteUploader().setAbonne(facade.estAbonne(compte.getId(), video.getCompteUploader().getId()));
 			}
-			responseMap.put("liked", liked);
+			responseMap.put("video", video);
 		} else if (op.equals("getVideoInfos")) {
 			int videoId = Integer.parseInt(request.getParameter("id"));
 			Video video = facade.getVideoFromID(videoId);
@@ -81,19 +80,54 @@ public class DataServlet extends HttpServlet {
 				response.getWriter().println("La vidéo n'a pas été trouvé");
 				return;
 			}
-			responseMap.put("message", video);
-			boolean liked = false;
 			if (compte!=null) {
-				liked = facade.liked(compte.getId(), video.getId());
+				video.setLiked(facade.liked(compte.getId(), video.getId()));
+				video.getCompteUploader().setAbonne(facade.estAbonne(compte.getId(), video.getCompteUploader().getId()));
 			}
-			responseMap.put("liked", liked);
+			responseMap.put("message", video);
 		} else if (op.equals("getHashtagVideos")) {
 			String hashtag = request.getParameter("hashtag");
 			if (hashtag == null) {
 				responseMap.put("message", "Parametre manquant");
 				response.setStatus(400);
 			} else {
-				Collection<Integer> videos = facade.getHashtagVideos(hashtag);
+				Collection<Video> videos = facade.getHashtagVideos(hashtag);
+				if (compte!=null) {
+					for (Video video: videos) {
+						video.setLiked(facade.liked(compte.getId(), video.getId()));
+						video.getCompteUploader().setAbonne(facade.estAbonne(compte.getId(), video.getCompteUploader().getId()));
+					}
+				}
+				responseMap.put("videos", videos);
+			}
+		} else if (op.equals("getLieuVideos")) {
+			String lieu = request.getParameter("lieu");
+			if (lieu == null) {
+				responseMap.put("message", "Parametre manquant");
+				response.setStatus(400);
+			} else {
+				Collection<Video> videos = facade.getVideoFromLieu(lieu);
+				if (compte!=null) {
+					for (Video video: videos) {
+						video.setLiked(facade.liked(compte.getId(), video.getId()));
+						video.getCompteUploader().setAbonne(facade.estAbonne(compte.getId(), video.getCompteUploader().getId()));
+					}
+				}
+				responseMap.put("videos", videos);
+			}
+		} else if (op.equals("getCompteVideos")) {
+			String compteID = request.getParameter("compteID");
+			if (compteID == null) {
+				responseMap.put("message", "Parametre manquant");
+				response.setStatus(400);
+			} else {
+				Collection<Video> videos = facade.getVideosFromCompte(Integer.parseInt(compteID));
+				if (compte!=null) {
+					for (Video video: videos) {
+						video.setLiked(facade.liked(compte.getId(), video.getId()));
+						video.getCompteUploader().setAbonne(facade.estAbonne(compte.getId(), video.getCompteUploader().getId()));
+					}
+				}
 				responseMap.put("videos", videos);
 			}
 		} else if (op.equals("getVideo")) {
@@ -129,6 +163,11 @@ public class DataServlet extends HttpServlet {
 			}
 		} else if (op.equals("getAllComptes")) {
 			Collection<Compte> comptes = facade.getAllComptes();
+			if (compte!=null) {
+				for (Compte compteUploader: comptes) {
+					compteUploader.setAbonne(facade.estAbonne(compte.getId(), compteUploader.getId()));
+				}
+			}
 			responseMap.put("comptes", comptes);
 		} else if (op.equals("getCompte")) {
 			int compteID = Integer.parseInt(request.getParameter("id"));
@@ -137,6 +176,9 @@ public class DataServlet extends HttpServlet {
 				responseMap.put("message", "Utilisateur non trouvé");
 				response.setStatus(400);
 			} else {
+				if (compte!=null) {
+					compteFound.setAbonne(facade.estAbonne(compte.getId(), compteFound.getId()));
+				}
 				responseMap.put("compte", compteFound);
 			}
 		} else if (op.equals("likeVideo")) {

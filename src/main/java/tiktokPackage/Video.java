@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
+import javax.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
 
@@ -37,7 +37,10 @@ public class Video  implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Expose
 	Set<Hashtag> hashtags = new HashSet<Hashtag>();
-
+	
+	@Expose
+	@Transient
+	private boolean liked;
 
 	@Expose
 	private String description;
@@ -117,4 +120,14 @@ public class Video  implements Serializable{
 	public void addHashtag(Hashtag hashtag) {
 		this.hashtags.add(hashtag);
 	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+	
+	
 }

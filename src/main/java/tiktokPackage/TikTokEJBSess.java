@@ -2,6 +2,7 @@ package tiktokPackage;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,8 +123,7 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	public boolean liked(int compteID, int videoID) {
 		Compte c = getCompte(compteID);
 		Video v = getVideoFromID(videoID);
-		if (c.getVideosLike().contains(v)) {return true;}
-		return false;
+		return (c!=null && v!=null && c.getVideosLike().contains(v));
 	}
 	
 	public void addVue(Video vue) {
@@ -132,10 +132,11 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	}
 	
 	@Override
-	public Collection<Integer> getHashtagVideos(String hashtag){
+	public Collection<Video> getHashtagVideos(String hashtag){
 		Hashtag hash = em.find(Hashtag.class, hashtag);
 		if (hash==null) {return null;}
-		return hash.getVideos().stream().map(v -> v.getId()).collect(Collectors.toList());
+		Collection<Video> videos = new LinkedList<Video>(hash.getVideos());
+		return videos;
 	}
 	
 	@Override
@@ -154,5 +155,27 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		if (compte == null || abonnement == null || !compte.getAbonnement().contains(abonnement)) return false;
 		compte.removeAbonnement(abonnement);
 		return true;
+	}
+	
+	@Override
+	public boolean estAbonne(int compteID, int abonnementID) {
+		Compte compte = getCompte(compteID);
+		Compte abonnement = getCompte(abonnementID);
+		return compte != null && abonnement != null && compte.getAbonnement().contains(abonnement);
+	}
+	
+	@Override
+	public Collection<Video> getVideosFromCompte(int compteId){
+		Compte compte = em.find(Compte.class, compteId);
+		if (compte==null) return null;
+		Collection<Video> videos = new LinkedList<Video>(compte.getVideos());
+		return videos;
+	}
+	
+	public Collection<Video> getVideoFromLieu(String lieu){
+		TypedQuery<Video> req = em.createQuery("SELECT v FROM Video v WHERE lieu=?1",
+				Video.class);
+		req.setParameter(1, lieu);
+		return req.getResultList();
 	}
 }
