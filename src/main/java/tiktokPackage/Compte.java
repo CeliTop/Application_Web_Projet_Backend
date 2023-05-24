@@ -58,6 +58,14 @@ public class Compte implements Serializable{
 	@Transient
 	private boolean abonne;
 	
+	@Expose
+	@Transient
+	private int nbAbonnes = 0;
+	
+	@Expose
+	@Transient
+	private int nbVideos = 0;
+	
 	
 	
 	public Collection<Video> getVideosLike() {
@@ -142,6 +150,13 @@ public class Compte implements Serializable{
 
 	public void setAbonne(boolean abonne) {
 		this.abonne = abonne;
+	}
+
+	public void setNbAbonnes() {
+		this.nbAbonnes = abonnes.size();
+	}
+	public void setNbVideos() {
+		this.nbVideos = videos.size();
 	}
 	
 }

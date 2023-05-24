@@ -31,6 +31,8 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	@Override
 	public Compte getCompte(int id) {
 		Compte compte = em.find(Compte.class, id);
+		compte.setNbAbonnes();
+		compte.setNbVideos();
 		return compte;
 	}
 
@@ -38,7 +40,12 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	public Collection<Compte> getAllComptes() {
 		TypedQuery<Compte> req = em.createQuery("SELECT c FROM Compte c",
 				Compte.class);
-		return req.getResultList();
+		Collection<Compte> comptes = req.getResultList();
+		for (Compte compte: comptes) {
+			compte.setNbAbonnes();
+			compte.setNbVideos();
+		}
+		return comptes;
 	}
 
 	@Override
@@ -57,16 +64,23 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 				video.addHashtag(bddHash);
 			}
 		}
+		video.getCompteUploader().setNbAbonnes();
+		video.getCompteUploader().setNbVideos();
 		return video;
 	}
 	
 	public Video getRandomVIdeo() {
 		TypedQuery<Video> req = em.createQuery("SELECT v FROM Video v ORDER BY RAND()",Video.class).setMaxResults(1);
-		return req.getResultList().get(0);
+		Video video = req.getResultList().get(0);
+		video.getCompteUploader().setNbAbonnes();
+		video.getCompteUploader().setNbVideos();
+		return video;
 	}
 	
 	public Video getVideoFromID(int id) {
 		Video video = em.find(Video.class, id);
+		video.getCompteUploader().setNbAbonnes();
+		video.getCompteUploader().setNbVideos();
 		return video;
 	}
 
@@ -79,9 +93,8 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		if (comptes.size() == 0) return null;
 		Compte dbCompte = comptes.get(0);
 		if (dbCompte == null || !(dbCompte.getPassword().equals(c.getPassword()))) return null;
-		System.out.println("=========");
-		System.out.println(dbCompte.getAbonnes());
-		System.out.println(dbCompte.getAbonnement());
+		dbCompte.setNbAbonnes();
+		dbCompte.setNbVideos();
 		return dbCompte;
 	}
 	
@@ -93,6 +106,8 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		Commentaire commentaire = new Commentaire(commentaireText, c, 0, new Date());
 		em.persist(commentaire);
 		v.addCommentaire(commentaire);
+		commentaire.getCompteUploader().setNbAbonnes();
+		commentaire.getCompteUploader().setNbVideos();
 		return commentaire;
 	}
 
@@ -136,6 +151,10 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		Hashtag hash = em.find(Hashtag.class, hashtag);
 		if (hash==null) {return null;}
 		Collection<Video> videos = new LinkedList<Video>(hash.getVideos());
+		for (Video video: videos) {
+			video.getCompteUploader().setNbAbonnes();
+			video.getCompteUploader().setNbVideos();
+		}
 		return videos;
 	}
 	
@@ -169,6 +188,10 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		Compte compte = em.find(Compte.class, compteId);
 		if (compte==null) return null;
 		Collection<Video> videos = new LinkedList<Video>(compte.getVideos());
+		for (Video video: videos) {
+			video.getCompteUploader().setNbAbonnes();
+			video.getCompteUploader().setNbVideos();
+		}
 		return videos;
 	}
 	
@@ -176,6 +199,11 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 		TypedQuery<Video> req = em.createQuery("SELECT v FROM Video v WHERE lieu=?1",
 				Video.class);
 		req.setParameter(1, lieu);
-		return req.getResultList();
+		Collection<Video> videos = req.getResultList();
+		for (Video video: videos) {
+			video.getCompteUploader().setNbAbonnes();
+			video.getCompteUploader().setNbVideos();
+		}
+		return videos;
 	}
 }
