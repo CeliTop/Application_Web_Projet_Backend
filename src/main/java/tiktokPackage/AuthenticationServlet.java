@@ -77,6 +77,9 @@ public class AuthenticationServlet extends HttpServlet {
 					responseMap.put("compte", dbCompte);
 				}
 			}
+		} else if (op.equals("logout")){
+			response.setHeader("Set-Cookie","loginID=-1;SameSite=None;Secure;expires=Thu, 01 Jan 1970 00:00:00 GMT");
+			responseMap.put("message", "Déconnection réussie");
 		}
 		String responseJson = gson.toJson(responseMap);
 		response.getWriter().println(responseJson);
