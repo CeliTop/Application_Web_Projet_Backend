@@ -2,6 +2,7 @@ package tiktokPackage;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -211,7 +212,12 @@ public class TikTokEJBSess implements BackendInterfaceLocal, BackendInterfaceRem
 	public Collection<Compte> getAbonnements(int compteId) {
 		Compte compte = em.find(Compte.class, compteId);
 		if (compte == null) return null;
-		return new LinkedList<Compte>(compte.getAbonnement());
+		Collection<Compte> comptes = new LinkedList<Compte>(compte.getAbonnement());
+		for(Compte Abocompte: comptes) {
+			Abocompte.setNbAbonnes();
+			Abocompte.setNbVideos();
+		}
+		return comptes;
 	}
 	
 	@Override
