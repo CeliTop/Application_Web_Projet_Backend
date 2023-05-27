@@ -9,9 +9,9 @@ public interface BackendInterfaceRemote {
 	/**
 	 * Add an account to the database 
 	 * @param c the account that need to be added to the database
-	 * @return true if the account is added to the database, false if an error occured
+	 * @return the account in the database
 	 */
-	public int addCompte(Compte c);
+	public Compte addCompte(Compte c);
 	
 	/**
 	 * Get an account from it's id

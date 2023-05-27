@@ -108,17 +108,18 @@ public class AuthenticationServlet extends HttpServlet {
 			String password = request.getParameter("password");
 			String bio = request.getParameter("bio");
 			String surnom = request.getParameter("surnom");
+			String pp = request.getParameter("pp");
 			Date currentDate = new Date();
 			// Robustesse
 			if (name == null || password == null) {
 				responseMap.put("message", "Parametre manquant");
 				response.setStatus(400);
 			} else {
-				int compteID = facade.addCompte(new Compte(name, password, bio, currentDate, surnom));
-				if (compteID>0) {
-					responseMap.put("message", name + " ajouté");
+				Compte compte = facade.addCompte(new Compte(name, password, bio, currentDate, surnom, Integer.parseInt(pp)));
+				if (compte != null) {
+					responseMap.put("compte", compte);
 					response.setHeader("Set-Cookie",
-							String.format("loginID=%d; SameSite=None; Secure", compteID));
+							String.format("loginID=%d; SameSite=None; Secure", compte.getId()));
 				} else {
 					responseMap.put("message", "Le nom " + name + " est déja utilisé");
 					response.setStatus(422);
